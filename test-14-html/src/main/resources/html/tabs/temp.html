@@ -1,0 +1,523 @@
+<div ng-class="wrapper-md" ng-controller="deviceResDetailCtrl">
+    <ui-form horizontal validation name="form21794806249064961">
+        <ui-panel class="">
+            <ui-panel-head>
+
+            </ui-panel-head>
+            <ui-panel-body style='height:auto'>
+                <!--设备基本信息-->
+                <ui-row class="m-b" >
+                </ui-row>
+                <ui-row class="m-b" >
+                        <ui-col style="" class="text-center" sm="1" md="1" lg="1">
+                            <label class="control-label animated labelType"
+                                   style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                   uib-tooltip-html="" tooltip-popup-delay=""
+                                   tooltip-popup-close-delay="" tooltip-placement="top"
+                                   tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                   tooltip-class="">设备名称</label>
+                        </ui-col>
+                        <ui-col style="" class="text-left" sm="3" md="3" lg="3">
+                            <input type="text" class="form-control " placeholder=""
+                                   ng-readonly="false" ng-disabled="param.isEdit==0"
+                                   ng-required="false" ng-model="param.device.dev_name"/>
+
+                        </ui-col>
+                        <ui-col style="" class="text-left" sm="1" md="1" lg="1">
+                            <label class="control-label animated labelType"
+                                   style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                   uib-tooltip-html="" tooltip-popup-delay=""
+                                   tooltip-popup-close-delay="" tooltip-placement="top"
+                                   tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                   tooltip-class="">设备类型</label>
+                        </ui-col>
+                        <ui-col style="" class="text-left" sm="1" md="1" lg="1">
+                            <input type="text" class="form-control " placeholder=""
+                                   ng-readonly="false" ng-disabled="param.isEdit==0"
+                                   ng-required="false" ng-model="param.device.dev_class"/>
+                        </ui-col>
+                        <ui-col style="" class="text-left" sm="1" md="1" lg="1">
+                            <label class="control-label animated labelType"
+                                   style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                   uib-tooltip-html="" tooltip-popup-delay=""
+                                   tooltip-popup-close-delay="" tooltip-placement="top"
+                                   tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                   tooltip-class="">设备IP</label>
+                        </ui-col>
+                        <ui-col style="width:10%" class="text-left" sm="1" md="1" lg="1">
+                            <input type="text" class="form-control " placeholder=""
+                                   ng-readonly="false" ng-disabled="param.isEdit==0"
+                                   ng-required="false" ng-model="param.device.manage_ip"/>
+
+                        </ui-col>
+                        <ui-col style="width:5%" class="text-left" sm="1" md="1" lg="1">
+                            <label class="control-label animated labelType"
+                                   style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                   uib-tooltip-html="" tooltip-popup-delay=""
+                                   tooltip-popup-close-delay="" tooltip-placement="top"
+                                   tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                   tooltip-class="">设备编号</label>
+                        </ui-col>
+                        <ui-col style="" class="text-left" sm="1" md="1" lg="1">
+                            <input type="text" class="form-control " placeholder=""
+                                   ng-readonly="false" ng-disabled="param.isEdit==0"
+                                   ng-required="false" ng-model="param.device.serial_number"/>
+
+                        </ui-col>
+                        <!--<ui-col style="" class="text-left" sm="1" md="1" lg="1">
+                            <label class="control-label animated labelType"
+                                   style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                   uib-tooltip-html="" tooltip-popup-delay=""
+                                   tooltip-popup-close-delay="" tooltip-placement="top"
+                                   tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                   tooltip-class="">归属站点</label>
+                        </ui-col>
+                        <ui-col style="" class="text-left" sm="1" md="1" lg="1">
+                            <input type="text" class="form-control " placeholder=""
+                                   ng-readonly="false" ng-disabled="param.isEdit==0"
+                                   ng-required="false" ng-model="param.device.tenant_id"/>
+                        </ui-col>-->
+                    </ui-row>
+
+
+                <!--设备其他信息-->
+                <!--<div class="subHead">设备其他信息</div>-->
+                <ui-row class="m-b">
+                    <ui-col style="" class="" sm="12" md="12" lg="12">
+                        <uib-tabset  tabdrop class="  tab-container " active="myindex">
+                            <uib-tab index=0>
+                                <uib-tab-heading ng-click="" >
+                                    设备属性
+                                </uib-tab-heading>
+                                <ui-row class="m-b">
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备型号</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.dev_type"/>
+
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">站点名称</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.area_name" />
+                                    </ui-col>
+                                    <!--<ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备详情</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.cityName"/>
+
+                                    </ui-col>-->
+                                </ui-row>
+                                <ui-row class="m-b">
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备标示UUID</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.ex_dev_id"/>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备版本</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.dev_version"/>
+                                    </ui-col>
+                                </ui-row>
+
+                                <ui-row class="m-b">
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">入网时间</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.add_time"/>
+
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备等级</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.dev_level"/>
+
+                                    </ui-col>
+                                </ui-row>
+                                <ui-row class="m-b">
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备串号</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.serial_number" />
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">设备角色</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.sla_level"/>
+
+                                    </ui-col>
+                                </ui-row>
+                                <ui-row class="m-b">
+                                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                                        <label class="control-label animated labelType"
+                                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                               uib-tooltip-html="" tooltip-popup-delay=""
+                                               tooltip-popup-close-delay="" tooltip-placement="top"
+                                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                               tooltip-class="">Overlay总带宽（Mbps）</label>
+                                    </ui-col>
+                                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                                        <input type="text" class="form-control " placeholder=""
+                                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                                               ng-required="false" ng-model="param.device.overlay_bandwidth" />
+                                    </ui-col>
+                                </ui-row>
+
+                                <!--<ui-row class="m-b">
+                                    <ui-col style="" class="text-right" sm="5" md="5" lg="5">
+                                        <ui-row class="m-b" ng-repeat="x in param.devAttrL track by $index">
+                                            <ui-col style="" class="text-right" sm="5" md="5" lg="5">
+                                                <label class="control-label animated labelType"
+                                                       style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                                       uib-tooltip-html="" tooltip-popup-delay=""
+                                                       tooltip-popup-close-delay="" tooltip-placement="top"
+                                                       tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                                       tooltip-class="" ng-model="x.name">{{x.name}}</label>
+                                            </ui-col>
+                                            <ui-col style="" class="text-right" sm="7" md="7" lg="7">
+                                                <input type="text" class="form-control " placeholder=""
+                                                       ng-readonly="false" ng-disabled="param.isEdit==0"
+                                                       ng-required="false" ng-model="x.value"/>
+                                            </ui-col>
+                                        </ui-row>
+                                    </ui-col>
+
+                                    <ui-col style="" class="text-right" sm="5" md="5" lg="5">
+                                        <ui-row class="m-b" ng-repeat="x in param.devAttrR track by $index">
+                                            <ui-col style="" class="text-right" sm="5" md="5" lg="5">
+                                                <label class="control-label animated labelType"
+                                                       style="margin:0px 5px 0px 0px;animation-duration:2s"
+                                                       uib-tooltip-html="" tooltip-popup-delay=""
+                                                       tooltip-popup-close-delay="" tooltip-placement="top"
+                                                       tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                                                       tooltip-class="" ng-model="x.name">{{x.name}}</label>
+                                            </ui-col>
+                                            <ui-col style="" class="text-right" sm="7" md="7" lg="7">
+                                                <input type="text" class="form-control " placeholder=""
+                                                       ng-readonly="false" ng-disabled="param.isEdit==0"
+                                                       ng-required="false" ng-model="x.value"/>
+                                            </ui-col>
+                                        </ui-row>
+                                    </ui-col>
+                                </ui-row>-->
+
+                            </uib-tab>
+                            <uib-tab  index=1>
+                                <uib-tab-heading ng-click="">
+                                    设备端口
+                                </uib-tab-heading>
+                                <div  ng-include="'./module/port/portList/temp.html'"></div>
+                            </uib-tab>
+                            <uib-tab index=2>
+                                <uib-tab-heading ng-click="">
+                                    设备隧道
+                                </uib-tab-heading>
+                                <div  ng-include="'./module/link/linkList/temp.html'"></div>
+                            </uib-tab>
+                            <uib-tab index=3>
+                                <uib-tab-heading ng-click="">
+                                    资源池
+                                </uib-tab-heading>
+                                <ui-iframe src={{url}}>
+
+                                </ui-iframe>
+                            </uib-tab>
+                        </uib-tabset>
+                    </ui-col>
+                </ui-row>
+            </ui-panel-body>
+            <ui-panel-foot>
+
+            </ui-panel-foot>
+        </ui-panel>
+    </ui-form>
+
+    <ui-modal controller="param.overview">
+        <ui-modal-head>
+
+        </ui-modal-head>
+
+        <ui-modal-body style="padding: 0px;">
+
+        </ui-modal-body>
+        <ui-modal-foot>
+            <ui-button type="button" ng-disabled="" ng-click="cancel()" style="margin:0px 0px 0px 0px"
+                       info class="  " tooltip-popup-delay="" tooltip-popup-close-delay=""
+                       tooltip-placement="top" tooltip-trigger="'mouseenter'" tooltip-enable="false" tooltip-class="">
+                取消
+            </ui-button>
+        </ui-modal-foot>
+    </ui-modal>
+
+
+    <ui-modal controller="param.createDevice">
+        <ui-modal-head>
+            <ui-row class="" >
+                <ui-col class="text-left" sm="12" md="12" lg="12">
+                    <label class="control-label bounceIn animated" style="margin:0px 0px 0px 0px;animation-duration:5s"
+                           tooltip-popup-delay="" tooltip-popup-close-delay="" tooltip-placement="top"
+                           tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                           tooltip-class="">创建设备</label>
+                </ui-col>
+            </ui-row>
+        </ui-modal-head>
+
+        <ui-modal-body style="padding: 0px;">
+            <!--设备基本信息-->
+            <div class="subHead">设备基本信息</div>
+            <ui-row class="m-b" >
+            </ui-row>
+            <ui-row class="m-b" >
+                <ui-row class="m-b">
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">设备名称</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <input type="text" class="form-control " placeholder=""
+                               ng-readonly="false" ng-change="isUsed()"
+                               ng-required="false" ng-model="param.newDevice.devName"/>
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s;color:red;font-size:smaller"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="" ng-if="param.isDevNameUsed==1">该名称已使用，请重新取名</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">设备类型</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <ui-select ng-model="param.resTypeCreate.selected"
+                                   theme="bootstrap" class="" ng-change="param.resTypeCreate.query()">
+                            <ui-select-match>
+                                {{$select.selected[param.resTypeCreate.column.v]}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="item in param.resTypeCreate.datas | filter: $select.search">
+                                <span ng-bind="item[param.resTypeCreate.column.v] "></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </ui-col>
+                </ui-row>
+                <ui-row class="m-b">
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">管理系统</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <ui-select ng-model="param.systemCreate.selected"
+                                   theme="bootstrap" class="" ng-change="param.systemCreate.query()">
+                            <ui-select-match>
+                                {{$select.selected[param.systemCreate.column.v]}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="item in param.systemCreate.datas | filter: $select.search">
+                                <span ng-bind="item[param.systemCreate.column.v] "></span>
+                            </ui-select-choices>
+                        </ui-select>
+
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">设备型号</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <input type="text" class="form-control " placeholder=""
+                               ng-readonly="false"
+                               ng-required="false" ng-model="param.device.devName"/>
+                    </ui-col>
+                </ui-row>
+                <ui-row class="m-b">
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">设备版本</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <input type="text" class="form-control " placeholder=""
+                               ng-readonly="false"
+                               ng-required="false" ng-model="param.device.devVersion"/>
+
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">补丁版本</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <input type="text" class="form-control " placeholder=""
+                               ng-readonly="false"
+                               ng-required="false" ng-model="param.device.patchVersion"/>
+                    </ui-col>
+                </ui-row>
+                <ui-row class="m-b">
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">设备IP</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <input type="text" class="form-control " placeholder=""
+                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                               ng-required="false" ng-model="param.device.manageIp"/>
+
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="2" md="2" lg="2">
+                        <label class="control-label animated labelType"
+                               style="margin:0px 5px 0px 0px;animation-duration:2s"
+                               uib-tooltip-html="" tooltip-popup-delay=""
+                               tooltip-popup-close-delay="" tooltip-placement="top"
+                               tooltip-trigger="'mouseenter'" tooltip-enable="false"
+                               tooltip-class="">设备状态</label>
+                    </ui-col>
+                    <ui-col style="" class="text-right" sm="4" md="4" lg="3">
+                        <input type="text" class="form-control " placeholder=""
+                               ng-readonly="false" ng-disabled="param.isEdit==0"
+                               ng-required="false" ng-model="param.device.devStat"/>
+                    </ui-col>
+                </ui-row>
+            </ui-row>
+        </ui-modal-body>
+        <ui-modal-foot>
+            <ui-button type="button" ng-disabled="" ng-click="cancel()" style="margin:0px 0px 0px 0px"
+                       info class="  " tooltip-popup-delay="" tooltip-popup-close-delay=""
+                       tooltip-placement="top" tooltip-trigger="'mouseenter'" tooltip-enable="false" tooltip-class="">
+                取消
+            </ui-button>
+            <ui-button type="button" ng-disabled="" ng-click="createConfirm()" style="margin:0px 0px 0px 0px"
+                       info class="  "  tooltip-popup-delay="" tooltip-popup-close-delay=""
+                       tooltip-placement="top" tooltip-trigger="'mouseenter'" tooltip-enable="false" tooltip-class="">
+                确认
+            </ui-button>
+        </ui-modal-foot>
+    </ui-modal>
+
+</div>
+
+<style>
+    .subHead{
+        width: 150px;
+        height: 35px;
+        line-height: 35px;
+        color: #fff;
+        text-align: center;
+        font-size: 16px;
+        margin-top: 15px;
+        background: -webkit-gradient(linear,left top,right top,from(#4980ff),to(#0bf));
+        background: -webkit-linear-gradient(left,#4980ff,#0bf);
+        background: -o-linear-gradient(left,#4980ff,#0bf);
+        background: linear-gradient(90deg,#4980ff,#0bf);
+    }
+
+
+    /*.modal-dialog{*/
+        /*width:1000px;*/
+    /*}*/
+    /*.tab-content{*/
+        /*height:auto;*/
+        /*width:800px;*/
+    /*}*/
+    /*.tab-pane ng-scope active{*/
+        /*height:480px;*/
+    /*}*/
+</style>

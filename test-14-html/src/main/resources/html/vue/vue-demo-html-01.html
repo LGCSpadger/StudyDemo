@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue测试</title>
+
+    <!-- 本地依赖 -->
+    <script src="../../static/plugins/axios/axios.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/plugins/element-ui@2.8.2/theme-chalk/index.css" />
+    <script src="../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/plugins/element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/plugins/moment/moment.js" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" type="text/css" href="./vue-demo-css-01.css" />
+    <script src="./vue-demo-js-01.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="app">
+    <template>
+        <div id="yj-table">
+            <el-table
+                    :data="tableData"
+                    height="100%"
+                    border
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange">
+                <el-table-column
+                        type="selection"
+                        width="55">
+                </el-table-column>
+                <el-table-column
+                        prop="xh"
+                        label="序号"
+                        type="index"
+                        :index="indexAdd"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="名称"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="author"
+                        label="作者"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="title"
+                        label="主题"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="content"
+                        label="内容"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="occurTime"
+                        label="创作时间"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="rdl"
+                        label="rdl"
+                        align="center">
+                </el-table-column>
+            </el-table>
+        </div>
+        <div><button type="button" @click="exportData()">导出</button></div>
+        <div class="block">
+            <el-pagination
+                    background
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="pageSize"
+                    layout="total, prev, pager, next"
+                    :total="total">
+            </el-pagination>
+        </div>
+    </template>
+</div>
+
+</body>
+</html>

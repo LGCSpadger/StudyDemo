@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue常用指令</title>
+
+    <style>
+        .active {
+            border: 5px solid red;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3、使用简洁的模板语法把数据渲染到页面上 -->
+    <div id="app">
+        <h6>指令：v-text，测试：开始，作用：无论内容是什么，都只会解析为文本</h6>
+        <h2 v-text="message + '?'">--测试</h2>
+        <h2 v-text="infos + '?'">--测试</h2>
+        <h2>{{ message + '?' }}--测试</h2>
+        <h6>指令：v-text，测试：结束</h6>
+        <br/>
+        <h6>指令：v-html，测试：开始，作用：设置元素的innerHTML，内容中有html结构会被解析为标签</h6>
+        <p v-html="address01"></p>
+        <p v-text="address02"></p>
+        <h6>指令：v-html，测试：结束</h6>
+        <br/>
+        <h6>指令：v-on，测试：开始，作用：为元素绑定事件，格式：v-on:事件名="方法名"，注意：v-on: 可以简写为 @，绑定的方法写在 methods 中</h6>
+        <input type="button" value="v-on指令" v-on:click="doSomeThing">
+        <input type="button" value="v-on简写" @click="doSomeThing">
+        <input type="button" value="双击事件" @dblclick="doSomeThing">
+        <br/>
+        <p @click="updateAnime">{{ anime }}</p>
+        <h6>指令：v-on，测试：结束</h6>
+        <h6>指令：v-on 事件修饰符，测试：开始，作用：@keyup.enter 表示按下 enter 键触发此事件，还有更多事件类型可参考 https://v2.cn.vuejs.org/v2/api#v-on</h6>
+        <input type="button" value="点击" @click="working(666,'我是一个测试参数')">
+        <input type="text" @keyup.enter="sayHi">
+        <h6>指令：v-on 事件修饰符，测试：结束</h6>
+        <br/>
+        <h6>本地应用：计数器，测试：开始</h6>
+        <div class="input-num">
+            <button @click="sub">-</button>
+            <span>{{ num }}</span>
+            <button @click="add">+</button>
+        </div>
+        <h6>本地应用：计数器，测试：结束</h6>
+        <br/>
+        <h6>指令：v-show，测试：开始，作用：根据真假切换元素的显示状态，原理：修改元素的display属性实现显示隐藏，对性能损耗较低，可以在频繁改变状态的时候使用</h6>
+        <input type="button" value="切换显示状态" @click="changeIsShow">
+        <input type="button" value="增加年龄" @click="addAge">
+        <img v-show="isShow" src="../../../static/dist/img/img01.jpg">
+        <img v-show="age>=18" src="../../../static/dist/img/img01.jpg">
+        <h6>指令：v-show，测试：结束</h6>
+        <br/>
+        <h6>指令：v-if，测试：开始，作用：根据真假切换元素的显示状态，原理：操纵dom元素，值为false的时候将元素从dom树中移除，为true的时候将元素添加到dom树，对性能损耗比较大，频繁改变状态的话不适合使用</h6>
+        <input type="button" value="切换显示状态" @click="changeIsShow">
+        <input type="button" value="增加年龄" @click="addAge">
+        <img v-if="isShow" src="../../../static/dist/img/img01.jpg">
+        <img v-if="age>=18" src="../../../static/dist/img/img01.jpg">
+        <h6>指令：v-if，测试：结束</h6>
+        <br/>
+        <h6>指令：v-bind，测试：开始，作用：设置元素的属性（例如：src、title、class...），格式：v-bind:属性名="属性值"，</h6>
+        <img v-bind:src="imgSrc">
+        <!-- 三元表达式 -->
+        <img :src="imgSrc" :title="imgTitle+'!!!'" :class="isActive01?'active':''" @click="toggleActive01">
+        <!-- 对象，active 是否生效取决于 isActive -->
+        <img :src="imgSrc" :title="imgTitle+'!!!'" :class="{active:isActive02}" @click="toggleActive02">
+        <h6>指令：v-bind，测试：结束</h6>
+        <br/>
+        <h6>本地应用：图片切换，测试：开始</h6>
+        <div class="img-change">
+            <a href="javascript:void(0)" v-show="imgIndex!=0" @click="prev" class="left">
+                <img src="../../../static/dist/img/prev.png">
+            </a>
+            <img :src="imgArr[imgIndex]">
+            <a href="javascript:void(0)" v-show="imgIndex<imgArr.length-1" @click="next" class="right">
+                <img src="../../../static/dist/img/next.png">
+            </a>
+        </div>
+        <h6>本地应用：图片切换，测试：结束</h6>
+        <br/>
+        <h6>指令：v-for，测试：开始，作用：根据数据生成列表结构，语法：(item,index) in arr</h6>
+        <ul>
+            <li v-for="cityName in cityNames">
+                一线城市：{{ cityName }}
+            </li>
+        </ul>
+        <h2 v-for="(vegetable,index) in vegetables" v-bind:title="vegetable.name">
+            第 {{ index + 1 }} 种蔬菜：{{ vegetable.name }}，单价（元/kg）：{{ vegetable.price }}
+        </h2>
+        <h6>指令：v-for，测试：结束</h6>
+        <br/>
+        <h6>指令：v-model，测试：开始，作用：双向数据绑定</h6>
+        <input type="button" value="修改数据" @click="updateMessage">
+        <input type="text" v-model="message" @keyup.enter="getMessage">
+        <h2>{{ message }}</h2>
+        <h6>指令：v-model，测试：结束</h6>
+        <br/>
+        <h6>网络应用：axios 请求，测试：开始，作用：访问网络数据，注意：axios回调函数中this指向发生了改变，需要额外的保存一份</h6>
+        <input type="button" value="获取笑话" @click="getJoke">
+        <p>{{ joke }}</p>
+        <br/>
+        <span>在input框中输入城市名称回车查询此城市的天气信息</span>
+        <input type="text" v-model="cityName" @keyup.enter="getWeather">
+        <p>{{ weather }}</p>
+        <h6>网络应用：axios 请求，测试：结束</h6>
+    </div>
+
+    <!-- 1、导入开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        //2、创建vue实例对象，设置el、data属性
+        var app = new Vue({
+            el: "#app",//管理 id="app" 的元素选择器
+            data: {
+                message: "Hello Vue!",
+                infos: "开始学习之旅",
+                address01: "<a href='https://www.baidu.com'>百度官网</a>",
+                address02: "<a href='https://www.baidu.com'>百度官网</a>",
+                anime: "画江湖之不良人，",
+                num: 1,
+                isShow: false,
+                age: 17,
+                imgSrc: "../../../static/dist/img/img01.jpeg",
+                imgTitle: "图片悬停提示",
+                isActive01: false,
+                isActive02: false,
+                imgArr: [
+                    "../../../static/dist/img/img03.jpeg",
+                    "../../../static/dist/img/img02.jpg",
+                    "../../../static/dist/img/img01.jpg",
+                ],
+                imgIndex: 0,
+                cityNames: ["北京","上海","广州","深圳"],
+                vegetables: [
+                    {name: "土豆",price: 6.5},
+                    {name: "番茄",price: 8.5},
+                ],
+                joke: "",
+                weather: "",
+                cityName: ""
+            },
+            methods: {
+                doSomeThing: function () {
+                    alert("我是打工人，不怕吃苦，就怕没钱！！！");
+                },
+                updateAnime: function () {
+                    this.anime += "又更新了！"
+                },
+                sub: function () {
+                    if (this.num <= 0) {
+                        alert("别点了，已经最小了！")
+                    } else {
+                        this.num--;
+                    }
+                },
+                add: function () {
+                    if (this.num >= 10) {
+                        alert("别点了，已经最大了！")
+                    } else {
+                        this.num++;
+                    }
+                },
+                changeIsShow: function () {
+                    this.isShow = !this.isShow;
+                },
+                addAge: function () {
+                    this.age++;
+                },
+                toggleActive01: function () {
+                    this.isActive01 = !this.isActive01;
+                },
+                toggleActive02: function () {
+                    this.isActive02 = !this.isActive02;
+                },
+                prev: function () {
+                    this.imgIndex--;
+                },
+                next: function () {
+                    this.imgIndex++;
+                },
+                working: function (p1,p2) {
+                    console.log("工作中，参数一：",p1,"，参数二：",p2)
+                },
+                sayHi: function () {
+                    alert("你吃饭了没？");
+                },
+                updateMessage: function () {
+                    this.message = "画江湖之不良人";
+                },
+                getMessage: function () {
+                    alert(this.message);
+                },
+                getJoke: function () {
+                    console.log("axios请求发生前的this对象是谁：",this);
+                    var that = this;
+                    axios.get("https://autumnfish.cn/api/joke").then(
+                        function (res) {
+                            console.log("axios请求发生后的this对象是谁：",this);
+                            that.joke = res.data;
+                        },
+                        function (err) {
+                            console.log("请求笑话发生错误，错误信息如下：",err)
+                        }
+                    );
+                },
+                getWeather: function () {
+                    console.log("天气查询城市：",this.cityName);
+                    var that = this;
+                    axios.get("http://wthrcdn.etouch.cn/weather_mini?city=" + this.cityName).then(
+                    // axios.get("https://autumnfish.cn/search?keywords=" + this.cityName).then(
+                        function (res) {
+                            console.log("天气查询结果：",res);
+                            that.weather = res.data;
+                        },
+                        function (err) {
+                            console.log("天气查询发生错误，错误信息如下：",err)
+                        }
+                    );
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<html>
+<head>
+    <title>新疆预见维护</title>
+    <meta charset="UTF-8">
+
+    <!-- 本地依赖 -->
+<!--    <link rel="stylesheet" href="../../static/plugins/layui-v2.6.8/layui/css/layui.css" media="all"/>-->
+<!--    <script src="../../static/plugins/layui-v2.6.8/layui/layui.js" type="text/javascript" charset="utf-8"></script>-->
+<!--    <script src="../../static/plugins/angular/angular.min.js" type="text/javascript" charset="utf-8"></script>-->
+<!--    <script src="../../static/plugins/moment/moment.js" type="text/javascript" charset="utf-8"></script>-->
+<!--    <script src="../../static/plugins/jQuery/jquery-3.6.0.min.js"></script>-->
+
+    <!-- 服务器依赖 -->
+    <link rel="stylesheet" href="./layui-v2.6.8/layui/css/layui.css" media="all"/>
+    <script src="./layui-v2.6.8/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./moment/moment.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./jQuery/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+        }
+        .row1 {
+            height: 20%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .column1 {
+            width: 35%;
+            text-align: center;
+        }
+        .column2 {
+            width: 20%;
+            flex-direction: column;
+        }
+        .layui-input {
+            width: 180px;
+            border: 1px solid #7d8489;
+            border-radius: 5px;
+        }
+        .elem1 {
+            margin-top: 10px;
+        }
+        .gzsbsh {
+            margin-left: 12%;
+        }
+        .column3 {
+            width: 25%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .elem2 {
+            width: 30%;
+            text-align: right;
+        }
+        .elem3 {
+            width: 70%;
+            text-align: left;
+            padding-left: 5px;
+        }
+        .inputContent {
+            width: 50%;
+        }
+        .row2 {
+            width: 100%;
+            height: 50%;
+        }
+        .pagelay {
+            text-align: right;
+            padding-right: 3%;
+        }
+        table thead tr th, table tbody tr td {
+            text-align: center;
+        }
+        table tr th {
+            background-color: #EEF1F6;
+            font-weight: bolder;
+            font-size: larger;
+        }
+        .layui-table th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="myController" ng-init="htmlInit()">
+<div>
+    <div class="row1">
+        <div class="column1">
+            <h1>设备预见维护列表</h1>
+        </div>
+        <div class="column2">
+            <div class="elem1">
+                <h1>预见日期</h1>
+            </div>
+            <div class="elem1">
+                <input type="text" class="layui-input" id="test1">
+            </div>
+        </div>
+        <div class="column2">
+            <div class="elem1">
+                <h1>故障设备数</h1>
+            </div>
+            <div class="elem1">
+                <h4 class="gzsbsh"><u>{{param.gzsbs}}</u></h4><!--{{tableData.length}}-->
+            </div>
+        </div>
+        <div class="column3">
+            <div class="elem2">
+                <span>输入设备IP查询：</span>
+            </div>
+            <div class="elem3">
+                <input type="text" class="inputContent" placeholder="请输入内容" ng-blur="searchByDevIp()" ng-model="param.devIp">
+            </div>
+        </div>
+    </div>
+    <div class="row2">
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>日期</th>
+                    <th>属地</th>
+                    <th>设备名称</th>
+                    <th>设备IP</th>
+                    <th>设备厂家</th>
+                    <th>设备型号</th>
+                    <th>异常分数</th>
+                    <th>端口流量</th>
+                    <th>光功率</th>
+                    <th>告警数</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <div id="pagePlugin" class="pagelay"></div>
+    </div>
+</div>
+
+
+<script>
+    //建立模块
+    //第一个参数是自定义的模块名，第二个参数是引用的模块名
+    var app = angular.module("myApp", []);
+    //创建控制器
+    app.controller("myController", function($scope){
+
+        $scope.param = {
+            "currentPage": 1,
+            "pageSize": 10,
+            "devIp": '',
+            "yjDate": new Date(new Date().getTime() - 3600 * 1000 * 24),
+            "tableData": [],
+            "gzsbs": 0
+        };
+
+        //页面初始化调用的方法
+        $scope.htmlInit = function () {
+            getTableData($scope.param.currentPage,$scope.param.pageSize,$scope.param.yjDate,$scope.param.devIp);
+        };
+
+
+        //查询首页表格数据
+        function getTableData(currentPage,pageSize,yjrq,devIp) {
+            console.log("首页请求参数: ",$scope.param.currentPage,"，",$scope.param.pageSize,",",yjrq,"，",devIp)
+            $.ajax({
+                url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+                type: "POST",//请求方式
+                data: {
+                    pageNum: currentPage,
+                    pageSize: pageSize,
+                    yjrq: moment(yjrq).format("YYYY-MM-DD"),
+                    devIp: devIp
+                },
+                success: function(result){//函数会在服务器执行成功后执行，result就是服务器返回结果
+                    if (result != null && result.length > 0 && result != "未查询到数据") {
+                        console.log("result: ",result);
+                        var yjData = JSON.parse(result);
+                        $scope.param.tableData = yjData;
+                        $scope.param.gzsbs = $scope.param.tableData.length;
+                        console.log("总数: ",$scope.param.tableData.length);
+
+                        clickPage($scope.param.tableData,$scope.param.currentPage);
+
+                        layui.use(['laypage', 'layer'], function(){
+                            var laypage = layui.laypage;
+
+                            //完整功能
+                            laypage.render({
+                                elem: 'pagePlugin',
+                                count: yjData.length,
+                                limit: $scope.param.pageSize,
+                                curr: $scope.param.currentPage,
+                                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                jump: function(obj,first){
+                                    if(!first){
+                                        clickPage($scope.param.tableData,obj.curr);
+                                    }
+                                }
+                            });
+                        });
+                    } else {
+                        console.log("未请求到 设备预见维护报表数据！！！！");
+                    };
+                },
+                error: function() {
+                    console.log("设备预见维护报表数据请求失败！！！！");
+                }
+            });
+        }
+
+        function clickPage(data,currPage) {
+            $("tbody").html("");
+            var startIndex = (currPage - 1) * 10;
+            var bodyStr = "";
+            for (let i = startIndex; i < (startIndex + 10); i++) {
+                var currRow = data[i];
+                if (typeof(currRow) == "undefined") {
+                    break;
+                }
+                var trStr = "<tr>" +
+                    "<td>" + (i + 1) + "</td>" +
+                    "<td>" + currRow.OLT_DATE + "</td>" +
+                    "<td>" + currRow.PROVINCE + "</td>" +
+                    "<td>" + currRow.DEVICE_NAME + "</td>" +
+                    "<td>" + currRow.BRAS_OLT_IP + "</td>" +
+                    "<td>" + currRow.VENDOR_NAME + "</td>" +
+                    "<td>" + currRow.DEVICE_MODEL + "</td>" +
+                    "<td>" + currRow.SCORE + "</td>" +
+                    "<td>" + currRow.PORT_FLOW_IS_ABNORMAL + "</td>" +
+                    "<td>" + currRow.LIGHT_POWER_IS_ABNORMAL + "</td>" +
+                    "<td>" + currRow.ALARM_COUNT + "</td>" +
+                    "</tr>";
+                bodyStr += trStr;
+            }
+            $("tbody").append(bodyStr);
+        }
+
+        $scope.searchByDevIp = function () {
+            getDataByDevIp($scope.param.devIp);
+        }
+
+        //根据设备id查询首页数据
+        function getDataByDevIp(devIp) {
+            console.log("devIp: ",devIp)
+            // this.input = devIp;
+            var ipCheckResult = checkIpAddr(devIp);
+            console.log("ipCheckResult: ",ipCheckResult)
+            if (ipCheckResult) {
+                getTableData($scope.param.currentPage,$scope.param.pageSize,moment($scope.param.yjDate).format("YYYY-MM-DD"),devIp);
+            } else {
+                alert("请输入合法的IP地址");
+            }
+        }
+
+        //校验IP是否合法
+        function checkIpAddr(ipAddr){
+            var exp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+            var reg = ipAddr.match(exp);
+            if(reg == null) {
+                console.log("您输入的IP地址不合法！");
+                return false;
+            };
+            return true;
+        }
+
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#test1', //指定元素
+                value: new Date(new Date().getTime() - 3600 * 1000 * 24),
+                done: function(value, date, endDate){//日期改变事件
+                    console.log("选中的日期：",value)
+                    $scope.param.yjDate = value;
+                    getTableData($scope.param.currentPage,$scope.param.pageSize,value,$scope.param.devIp);
+                }
+            });
+        });
+
+    });
+
+</script>
+</body>
+</html>

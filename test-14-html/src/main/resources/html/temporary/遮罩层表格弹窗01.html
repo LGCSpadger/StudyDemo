@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    <style>
+        .model {
+            width:500px;
+            height:500px;
+            box-shadow:0 0 10px rgba(0,0,0,.4);
+            border-radius:8px;
+            padding:1em;
+            padding-top:0;
+            position:fixed;
+            z-index:100;
+            background-color:#fff;
+            display:none;
+        }
+        .model-header {
+            border-bottom:1px solid #eaeaea;
+            height:35px;
+            line-height:35px;
+            text-align:center;
+        }
+        .close{
+            position:absolute;
+            top:0;
+            right:15px;
+            height:35px;
+            line-height:35px;
+            text-align:center;
+            display:block;
+            color:#666;
+            cursor:pointer;
+        }
+        .close:hover{
+            color:#A30D10;
+        }
+        .mask{
+            background-color:#000;
+            width:100%;
+            height:100%;
+            opacity:.3;
+            filter:alpha(opacity=30);
+            position:absolute;
+            left:0;
+            top:0;
+            z-index:0;
+            display:none;
+        }
+    </style>
+</head>
+<body>
+<div><a href="javascript:;" class="open">登陆</a></div>
+<div class="model">
+    <div class="model-header">
+        <h3>弹出标题</h3>
+        <span class="close">×</span>
+    </div>
+    <div class="model-body">弹出内容 </div>
+    <div class="model-footer"></div>
+</div>
+<div class="mask"></div>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".open").click(function(){
+            showModel();
+        });
+        function showModel(){
+            var wW=$(window).width();  //浏览器可视区域宽度和高度
+            var wH=$(window).height();
+            var oW=$(".model").innerWidth(); //获取类叫model的宽度和高度
+            var oH=$(".model").innerHeight();
+            $(".model").show().css({"top":(wH-oH)/2+"px","left":(wW-oW)/2+"px"});
+            $(".mask").fadeIn();
+        }
+        $(window).resize(function(){
+            if($(".model").is(":visible")){ //弹出框必须可见后 才能调用showModel()
+                showModel();
+            }
+        });
+        $(".close").click(function(){
+            $(".model").hide();
+            $(".mask").fadeOut();
+        });
+        $(document).keydown(function(ev){
+            if(ev.keyCode==27){  //当按下键盘Esc时===》close关闭按钮
+//				$(".model").hide();
+//				$(".mask").fadeOut();
+                $(".close").trigger("click");//trigger("事件名")  模拟事件
+            }
+        })
+    });
+</script>
+</body>
+</html>

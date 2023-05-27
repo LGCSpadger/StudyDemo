@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+      .drag-container {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+      }
+
+      .drag-container .drag-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 200px;
+          height: 200px;
+          margin: 20px;
+          color: #fff;
+          font-size: 20px;
+          font-weight: bold;
+      }
+
+      .drag-container .drag-box .drag-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 150px;
+          height: 150px;
+      }
+  </style>
+  <title>ng-dragger</title>
+</head>
+
+<body ng-app="app" ng-controller="draggerController">
+<div class="drag-container">
+  <div ng-repeat="item in dragArr track by $index" id="div_{{$index}}" class="drag-box" ng-drop="true" ng-drop-success="onDropComplete($index, $data, $event)">
+    <div class="drag-item" ng-drag="true" ng-drag-data="{{item}}" ng-style="{background: item.color}">{{item.text}}</div>
+  </div>
+</div>
+
+<!--<script src="https://cdn.bootcss.com/angular.js/1.3.1/angular.js"></script>-->
+<!--<script src="https://cdn.bootcss.com/ngDraggable/0.1.11/ngDraggable.js"></script>-->
+
+
+<script src="../../static/plugins/angular/angular.min.js"></script>
+<script src="../../static/plugins/angular/ngDraggable.js"></script>
+<script>
+  var myApp = angular.module('app', ['ngDraggable']);
+  myApp.controller('draggerController', function($scope) {
+    $scope.dragArr = [{
+      text: '方块1',
+      color: 'green',
+      key: 'arr1'
+    }, {
+      text: '方块2',
+      color: 'blue',
+      key: 'arr1'
+    }, {
+      text: '方块3',
+      color: '#888',
+      key: 'arr1'
+    }, {
+      text: '方块4',
+      color: '#888',
+      key: 'arr2'
+    }, {
+      text: '方块5',
+      color: '#888',
+      key: 'arr2'
+    }, {
+      text: '方块6',
+      color: '#888',
+      key: 'arr2'
+    }];
+    $scope.ids = [1,2,3,4,5,6];
+
+    $scope.onDropComplete = function(index, obj, $event) {
+      console.log("44444444444",$scope.dragArr)
+      console.log("11111111111",index,obj,$event)
+      var otherObj = $scope.dragArr[index];
+      console.log("22222222222",otherObj)
+      var otherIndex = $scope.dragArr.findIndex(vv => Object.is(vv.text, obj.text));
+      console.log("33333333333",otherIndex)
+      if (otherObj.key !== obj.key) return;
+      $scope.dragArr[index] = obj;
+      $scope.dragArr[otherIndex] = otherObj;
+      console.log("55555555555",$scope.dragArr)
+    }
+
+  })
+</script>
+</body>
+
+</html>

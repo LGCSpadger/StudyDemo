@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>鼠标悬停显示账号信息</title>
+</head>
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //鼠标悬浮提示账号信息
+        var zIndex = 1;
+        $(".tipsSpan").mouseover(function(){
+            if($(this).find("span").is(":visible")){
+                $(this).find("span").css({"visibility":"visible","zIndex":zIndex++});
+            }
+        });
+        $(".tipsSpan").mouseout(function(){
+            $(this).find("span").css({"visibility":"hidden"});
+        });
+    });
+</script>
+<style type="text/css">
+    .tipsSpan{
+        position: relative;
+    }
+    .tips{
+        visibility: hidden;
+        position: absolute;
+        background: #FFFFBB;
+        border: 1px solid #000;
+        display: inline;
+        min-width: 130px;
+        min-height: 24px;
+        left: 20px;
+        top:18px;
+    }
+</style>
+<body>
+<span class="tipsSpan">
+        <a href="javascript:void(0)">徐婷婷</a>
+        <span class="tips">这是一个提示信息</span>
+    </span>
+</body>
+</html>

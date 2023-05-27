@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery.extend()测试</title>
+
+    <script src="../../static/plugins/jQuery/jquery-1.6.1.js"></script>
+</head>
+<body>
+<button id="test01">测试</button>
+
+<script>
+    var indexNum = 1;
+    $(function () {
+        $.extend({
+            fun01: function () {
+                alert("1111");
+            },
+            fun02: function () {
+                alert("2222");
+            }
+        });
+
+        $("#test01").click(function () {//jquery 1.几 的版本只支持这种写法
+            if (indexNum == 1) {
+                indexNum++;
+                $.fun01();
+            } else {
+                indexNum--;
+                $.fun02();
+            }
+        });
+
+        // $("#test01").on("click",function () {//jquery 1.几 的版本不支持这种写法
+        //     if (indexNum == 1) {
+        //         indexNum++;
+        //         $.fun01();
+        //     } else {
+        //         indexNum--;
+        //         $.fun02();
+        //     }
+        // })
+    })
+</script>
+</body>
+</html>

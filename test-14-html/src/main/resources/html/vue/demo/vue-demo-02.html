@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>el：挂载点</title>
+</head>
+<body>
+    <!-- 3、使用简洁的模板语法把数据渲染到页面上 -->
+    {{ message }}
+    <div id="app" class="app">
+        {{ message }} + {{ other }}
+        <span>{{ message }}</span>
+    </div>
+
+    <!-- 1、导入开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        //2、创建vue实例对象，设置el、data属性
+        var app = new Vue({
+            el: "#app",//管理 id="app" 的元素选择器
+            // el: ".app",//管理 class="app" 的元素选择器
+            // el: "div",//管理 div标签 的元素选择器
+            data: {
+                message: "Hello Vue!",
+                other: "开始学习之旅"
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>政企电路及性能监控</title>
+
+  <!-- 本地依赖 -->
+  <!--  <link rel="stylesheet" type="text/css" href="../../static/plugins/element-ui@2.8.2/theme-chalk/index.css" />-->
+  <!--  <script src="../../static/plugins/jQuery/jquery-3.6.0.min.js"></script>-->
+  <!--  <script src="../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>-->
+  <!--  <script src="../../static/plugins/element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>-->
+  <!--  <script src="../../static/plugins/moment/moment.js" type="text/javascript" charset="utf-8"></script>-->
+  <!-- 本地依赖 -->
+
+  <!-- 服务器依赖 -->
+  <link rel="stylesheet" type="text/css" href="./element-ui@2.8.2/theme-chalk/index.css" />
+  <script src="./jQuery/jquery-3.6.0.min.js"></script>
+  <script src="./vue/vue.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./moment/moment.js" type="text/javascript" charset="utf-8"></script>
+  <!-- 服务器依赖 -->
+
+  <style>
+      #page-head {
+          width: 100%;
+          height: 15%;
+          display: flex;
+          flex-direction: column;
+      }
+      el-dialog title {
+          font-weight: bolder;
+      }
+      .row-condition {
+          display: flex;
+          margin-top: 10px;
+      }
+      .condition-title {
+          text-align: right;
+          padding-top: 7px;
+          min-width: 120px;
+          flex-shrink: 0;
+      }
+      .condition-content {
+          text-align: left;
+          padding-left: 5px;
+          flex: 1;
+      }
+      .col-condition {
+          padding: 5px 0px;
+          display: flex;
+      }
+      .col-button {
+          padding: 5px 25px;
+          display: flex;
+      }
+      .el-icon-com {
+          cursor: pointer;
+          margin-left: 5px;
+      }
+      .el-icon-com:hover {
+          color: #409EFF;
+      }
+      .content-label {
+          padding-top: 7px;
+      }
+      .input-search {
+          display: flex;
+          padding-left: 5px;
+      }
+      .row-button {
+          text-align: right;
+          margin-top: 10px;
+          padding-right: 25px;
+      }
+      .upload-sty {
+          display: flex;
+      }
+      .but-sty {
+          margin-left: 10px;
+      }
+      .upload-tip-text {
+          padding: 5px 10px;
+      }
+  </style>
+</head>
+<body>
+<div id="app">
+  <template>
+    <div>
+      <div id="page-head">
+        <div class="row-condition">
+          <div class="condition-title">
+            <label>资源类型：</label>
+          </div>
+          <div class="condition-content">
+            <el-radio v-model="resourceType" label="1">以太网专线</el-radio>
+            <el-radio v-model="resourceType" label="2">互联网专线</el-radio>
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>电路编号：</label>
+            </div>
+            <div class="condition-content">
+              <el-input v-model="circuitNumberCon" placeholder="请输入内容"></el-input>
+            </div>
+          </div>
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>客户名称：</label>
+            </div>
+            <div class="condition-content">
+              <el-input v-model="customerName" placeholder="请输入内容"></el-input>
+            </div>
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>业务号码：</label>
+            </div>
+            <div class="condition-content">
+              <el-input v-model="businessNumber" placeholder="请输入内容"></el-input>
+            </div>
+          </div>
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>A端地市：</label>
+            </div>
+            <div class="condition-content">
+              <el-cascader
+                  v-model="aPortCity"
+                  :options="aPortCitys"
+                  expand-trigger="hover"
+                  @change="handleChange"></el-cascader>
+            </div>
+          </div>
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>Z端地市：</label>
+            </div>
+            <div class="condition-content">
+              <el-cascader
+                  v-model="zPortCity"
+                  :options="zPortCitys"
+                  expand-trigger="hover"
+                  @change="handleChange"></el-cascader>
+            </div>
+          </div>
+          <div class="col-button">
+            <el-button type="primary" icon="el-icon-search" @click="queryCircuitsInfo">查询</el-button>
+            <el-button type="primary" @click="exportCircuitsInfo">导出</el-button>
+            <!-- action 中填上上传的地址 http://127.0.0.1:15559 -->
+            <el-upload
+                class="upload-sty"
+                action="/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!importCircuitList.action"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                :before-upload="beforeAvatarUpload"
+                :on-progress="handleProgress"
+                :on-success="uploadSuccess"
+                :on-error="uploadError"
+                multiple
+                :data="{resourceType: resourceType}"
+                :limit="1"
+                :on-exceed="handleExceed"
+                :file-list="fileList">
+              <el-button type="primary" class="but-sty">导入</el-button>
+              <div slot="tip" class="el-upload__tip upload-tip-text">只能上传xls/xlsx文件，且不超过500kb</div>
+            </el-upload>
+          </div>
+        </div>
+      </div>
+      <div id="page-content">
+        <el-table
+            :data="tableData"
+            :header-cell-style="{background:'#eef1f6',color:'#000000'}"
+            border
+            height="600"
+            style="width: 100%">
+
+          <el-table-column :prop="index" :label="item" v-for="(item, index) in tableHeader"
+                           :key="index" align="center" show-overflow-tooltip>
+          </el-table-column>
+
+          <el-table-column
+              label="操作"
+              align="center">
+            <template slot-scope="scope">
+              <i class="el-icon-edit el-icon-com" title="编辑" @click="circuitInfoEdit(scope.row)"></i>
+              <i class="el-icon-delete el-icon-com" title="删除" @click="deleteCircuit(scope.row)"></i>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 分页组件 -->
+        <div class="block" style="display: flex;justify-content: flex-end;align-items: center;margin-top: 10px;margin-right: 15px">
+          <el-pagination
+              background
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-size="pageSize"
+              layout="total, prev, pager, next"
+              :total="total">
+          </el-pagination>
+        </div>
+      </div>
+
+      <!-- 电路信息编辑页面 -->
+      <el-dialog title="电路信息编辑" :visible.sync="editWindowVisible" center width="30%">
+        <div class="row-condition">
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>电路ID：</label>
+            </div>
+            <div class="condition-content">
+              <div class="content-label" id="circuitIdDiv" >
+                {{currentData.CIRCUIT_ID}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="col-condition">
+            <div class="condition-title">
+              <label>电路编号：</label>
+            </div>
+            <div class="condition-content">
+              <div class="content-label" id="circuitNoDiv">
+                {{currentData.CIRCUIT_NO}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="condition-title">
+            <label>A端网管设备：</label>
+          </div>
+          <div class="input-search">
+            <el-input
+                placeholder="请输入内容"
+                v-model="aPortDev">
+              <i slot="prefix" class="el-input__icon el-icon-search el-icon-com" @click="queryAWgDev"></i>
+            </el-input>
+            <!--          <el-button type="primary" icon="el-icon-search">搜索</el-button>-->
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="condition-title">
+            <label>A端网管端口：</label>
+          </div>
+          <div class="condition-content">
+            <el-select v-model="aManPort" placeholder="请选择">
+              <el-option
+                  v-for="item in aManPorts"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="condition-title">
+            <label>Z端网管设备：</label>
+          </div>
+          <div class="input-search">
+            <el-input
+                placeholder="请输入内容"
+                v-model="zPortDev">
+              <i slot="prefix" class="el-input__icon el-icon-search el-icon-com" @click="queryZWgDev"></i>
+            </el-input>
+            <!--          <el-button type="primary" icon="el-icon-search">搜索</el-button>-->
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="condition-title">
+            <label>Z端网管端口：</label>
+          </div>
+          <div class="condition-content">
+            <el-select v-model="zManPort" placeholder="请选择">
+              <el-option
+                  v-for="item in zManPorts"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row-condition">
+          <div class="condition-title">
+            <label>客户类型：</label>
+          </div>
+          <div class="condition-content">
+            <el-select v-model="customerType" placeholder="请选择">
+              <el-option
+                  v-for="item in customerTypes"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row-button">
+          <el-button type="primary" @click="saveCircuitInfo">保存</el-button>
+        </div>
+      </el-dialog>
+    </div>
+
+  </template>
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      // basePath: "http://127.0.0.1:15559",
+      basePath: "",
+      currentData: {},
+      currentPage: 0,
+      pageSize: 10,
+      total: 21,
+      resourceType: '1',//资源类型
+      circuitNumberCon: '',//电路编号（查询条件）
+      customerName: '',//客户名称
+      businessNumber: '',//业务号码
+      aPortCity: [],//a端地市
+      zPortCity: [],//z端地市
+      aPortDev: '',//a端网管设备
+      zPortDev: '',//z端网管设备
+      aPortCitys: [
+        {
+          value: 'zhinan',
+          label: '指南',
+          children: [
+            {
+              value: 'shejiyuanze',
+              label: '设计原则',
+              children: [{
+                value: 'yizhi',
+                label: '一致'
+              }, {
+                value: 'fankui',
+                label: '反馈'
+              }, {
+                value: 'xiaolv',
+                label: '效率'
+              }, {
+                value: 'kekong',
+                label: '可控'
+              }]
+            }, {
+              value: 'daohang',
+              label: '导航',
+              children: [{
+                value: 'cexiangdaohang',
+                label: '侧向导航'
+              }, {
+                value: 'dingbudaohang',
+                label: '顶部导航'
+              }]
+            }]
+        }, {
+          value: 'zujian',
+          label: '组件',
+          children: [{
+            value: 'basic',
+            label: 'Basic',
+            children: [{
+              value: 'layout',
+              label: 'Layout 布局'
+            }, {
+              value: 'color',
+              label: 'Color 色彩'
+            }, {
+              value: 'typography',
+              label: 'Typography 字体'
+            }, {
+              value: 'icon',
+              label: 'Icon 图标'
+            }, {
+              value: 'button',
+              label: 'Button 按钮'
+            }]
+          }, {
+            value: 'form',
+            label: 'Form',
+            children: [{
+              value: 'radio',
+              label: 'Radio 单选框'
+            }, {
+              value: 'checkbox',
+              label: 'Checkbox 多选框'
+            }, {
+              value: 'input',
+              label: 'Input 输入框'
+            }, {
+              value: 'input-number',
+              label: 'InputNumber 计数器'
+            }, {
+              value: 'select',
+              label: 'Select 选择器'
+            }, {
+              value: 'cascader',
+              label: 'Cascader 级联选择器'
+            }, {
+              value: 'switch',
+              label: 'Switch 开关'
+            }, {
+              value: 'slider',
+              label: 'Slider 滑块'
+            }, {
+              value: 'time-picker',
+              label: 'TimePicker 时间选择器'
+            }, {
+              value: 'date-picker',
+              label: 'DatePicker 日期选择器'
+            }, {
+              value: 'datetime-picker',
+              label: 'DateTimePicker 日期时间选择器'
+            }, {
+              value: 'upload',
+              label: 'Upload 上传'
+            }, {
+              value: 'rate',
+              label: 'Rate 评分'
+            }, {
+              value: 'form',
+              label: 'Form 表单'
+            }]
+          }, {
+            value: 'data',
+            label: 'Data',
+            children: [{
+              value: 'table',
+              label: 'Table 表格'
+            }, {
+              value: 'tag',
+              label: 'Tag 标签'
+            }, {
+              value: 'progress',
+              label: 'Progress 进度条'
+            }, {
+              value: 'tree',
+              label: 'Tree 树形控件'
+            }, {
+              value: 'pagination',
+              label: 'Pagination 分页'
+            }, {
+              value: 'badge',
+              label: 'Badge 标记'
+            }]
+          }, {
+            value: 'notice',
+            label: 'Notice',
+            children: [{
+              value: 'alert',
+              label: 'Alert 警告'
+            }, {
+              value: 'loading',
+              label: 'Loading 加载'
+            }, {
+              value: 'message',
+              label: 'Message 消息提示'
+            }, {
+              value: 'message-box',
+              label: 'MessageBox 弹框'
+            }, {
+              value: 'notification',
+              label: 'Notification 通知'
+            }]
+          }, {
+            value: 'navigation',
+            label: 'Navigation',
+            children: [{
+              value: 'menu',
+              label: 'NavMenu 导航菜单'
+            }, {
+              value: 'tabs',
+              label: 'Tabs 标签页'
+            }, {
+              value: 'breadcrumb',
+              label: 'Breadcrumb 面包屑'
+            }, {
+              value: 'dropdown',
+              label: 'Dropdown 下拉菜单'
+            }, {
+              value: 'steps',
+              label: 'Steps 步骤条'
+            }]
+          }, {
+            value: 'others',
+            label: 'Others',
+            children: [{
+              value: 'dialog',
+              label: 'Dialog 对话框'
+            }, {
+              value: 'tooltip',
+              label: 'Tooltip 文字提示'
+            }, {
+              value: 'popover',
+              label: 'Popover 弹出框'
+            }, {
+              value: 'card',
+              label: 'Card 卡片'
+            }, {
+              value: 'carousel',
+              label: 'Carousel 走马灯'
+            }, {
+              value: 'collapse',
+              label: 'Collapse 折叠面板'
+            }]
+          }]
+        }, {
+          value: 'ziyuan',
+          label: '资源',
+          children: [{
+            value: 'axure',
+            label: 'Axure Components'
+          }, {
+            value: 'sketch',
+            label: 'Sketch Templates'
+          }, {
+            value: 'jiaohu',
+            label: '组件交互文档'
+          }]
+        }
+      ],
+      zPortCitys: [
+        {
+          value: 'zhinan',
+          label: '指南',
+          children: [
+            {
+              value: 'shejiyuanze',
+              label: '设计原则',
+              children: [{
+                value: 'yizhi',
+                label: '一致'
+              }, {
+                value: 'fankui',
+                label: '反馈'
+              }, {
+                value: 'xiaolv',
+                label: '效率'
+              }, {
+                value: 'kekong',
+                label: '可控'
+              }]
+            }, {
+              value: 'daohang',
+              label: '导航',
+              children: [{
+                value: 'cexiangdaohang',
+                label: '侧向导航'
+              }, {
+                value: 'dingbudaohang',
+                label: '顶部导航'
+              }]
+            }]
+        }, {
+          value: 'zujian',
+          label: '组件',
+          children: [{
+            value: 'basic',
+            label: 'Basic',
+            children: [{
+              value: 'layout',
+              label: 'Layout 布局'
+            }, {
+              value: 'color',
+              label: 'Color 色彩'
+            }, {
+              value: 'typography',
+              label: 'Typography 字体'
+            }, {
+              value: 'icon',
+              label: 'Icon 图标'
+            }, {
+              value: 'button',
+              label: 'Button 按钮'
+            }]
+          }, {
+            value: 'form',
+            label: 'Form',
+            children: [{
+              value: 'radio',
+              label: 'Radio 单选框'
+            }, {
+              value: 'checkbox',
+              label: 'Checkbox 多选框'
+            }, {
+              value: 'input',
+              label: 'Input 输入框'
+            }, {
+              value: 'input-number',
+              label: 'InputNumber 计数器'
+            }, {
+              value: 'select',
+              label: 'Select 选择器'
+            }, {
+              value: 'cascader',
+              label: 'Cascader 级联选择器'
+            }, {
+              value: 'switch',
+              label: 'Switch 开关'
+            }, {
+              value: 'slider',
+              label: 'Slider 滑块'
+            }, {
+              value: 'time-picker',
+              label: 'TimePicker 时间选择器'
+            }, {
+              value: 'date-picker',
+              label: 'DatePicker 日期选择器'
+            }, {
+              value: 'datetime-picker',
+              label: 'DateTimePicker 日期时间选择器'
+            }, {
+              value: 'upload',
+              label: 'Upload 上传'
+            }, {
+              value: 'rate',
+              label: 'Rate 评分'
+            }, {
+              value: 'form',
+              label: 'Form 表单'
+            }]
+          }, {
+            value: 'data',
+            label: 'Data',
+            children: [{
+              value: 'table',
+              label: 'Table 表格'
+            }, {
+              value: 'tag',
+              label: 'Tag 标签'
+            }, {
+              value: 'progress',
+              label: 'Progress 进度条'
+            }, {
+              value: 'tree',
+              label: 'Tree 树形控件'
+            }, {
+              value: 'pagination',
+              label: 'Pagination 分页'
+            }, {
+              value: 'badge',
+              label: 'Badge 标记'
+            }]
+          }, {
+            value: 'notice',
+            label: 'Notice',
+            children: [{
+              value: 'alert',
+              label: 'Alert 警告'
+            }, {
+              value: 'loading',
+              label: 'Loading 加载'
+            }, {
+              value: 'message',
+              label: 'Message 消息提示'
+            }, {
+              value: 'message-box',
+              label: 'MessageBox 弹框'
+            }, {
+              value: 'notification',
+              label: 'Notification 通知'
+            }]
+          }, {
+            value: 'navigation',
+            label: 'Navigation',
+            children: [{
+              value: 'menu',
+              label: 'NavMenu 导航菜单'
+            }, {
+              value: 'tabs',
+              label: 'Tabs 标签页'
+            }, {
+              value: 'breadcrumb',
+              label: 'Breadcrumb 面包屑'
+            }, {
+              value: 'dropdown',
+              label: 'Dropdown 下拉菜单'
+            }, {
+              value: 'steps',
+              label: 'Steps 步骤条'
+            }]
+          }, {
+            value: 'others',
+            label: 'Others',
+            children: [{
+              value: 'dialog',
+              label: 'Dialog 对话框'
+            }, {
+              value: 'tooltip',
+              label: 'Tooltip 文字提示'
+            }, {
+              value: 'popover',
+              label: 'Popover 弹出框'
+            }, {
+              value: 'card',
+              label: 'Card 卡片'
+            }, {
+              value: 'carousel',
+              label: 'Carousel 走马灯'
+            }, {
+              value: 'collapse',
+              label: 'Collapse 折叠面板'
+            }]
+          }]
+        }, {
+          value: 'ziyuan',
+          label: '资源',
+          children: [{
+            value: 'axure',
+            label: 'Axure Components'
+          }, {
+            value: 'sketch',
+            label: 'Sketch Templates'
+          }, {
+            value: 'jiaohu',
+            label: '组件交互文档'
+          }]
+        }],
+      aManPorts: [//a端网管端口
+        {
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }
+      ],
+      aManPort: '',//a端网管端口
+      zManPorts: [//z端网管端口
+        {
+          value: '选项1',
+          label: '网管一'
+        }, {
+          value: '选项2',
+          label: '网管二'
+        }
+      ],
+      zManPort: '',//z端网管端口
+      customerTypes: [//客户类型
+        {
+          value: '选项1',
+          label: '农业银行'
+        }, {
+          value: '选项2',
+          label: '招商银行'
+        }
+      ],
+      customerType: '',//客户类型
+      circuitNumber: '',//电路编号（编辑的时候）
+      circuitId: '',//电路ID（编辑的时候）
+      editWindowVisible: false,//电路编辑窗口的开关
+      ytwTableData: [
+        {
+          CIRCUIT_ID: '2016-05-03',
+          CIRCUIT_NO: '以太网一',
+          SERIAL_NO: '开发区C600-4',
+          BUSINESS_IDENTITY: '135.20.98.226',
+          CITY_A_T: 'ZTE',
+          CITY_Z_T: 'C600',
+          A_PORT_ID_T: 58,
+          Z_PORT_ID_TZ: 0,
+          ROUTE_NAME: 0,
+          CIRCUIT_CUST_T: 2,
+          A_WG_NE: 2,
+          Z_WG_NE: 2,
+          A_WG_PORT: 2,
+          Z_WG_PORT: 2,
+          CUST_TYPE: 2
+        }, {
+          CIRCUIT_ID: '2016-05-03',
+          CIRCUIT_NO: '以太网二',
+          SERIAL_NO: '开发区C600-4',
+          BUSINESS_IDENTITY: '135.20.98.226',
+          CITY_A_T: 'ZTE',
+          CITY_Z_T: 'C600',
+          A_PORT_ID_T: 58,
+          Z_PORT_ID_TZ: 0,
+          ROUTE_NAME: 0,
+          CIRCUIT_CUST_T: 2,
+          A_WG_NE: 2,
+          Z_WG_NE: 2,
+          A_WG_PORT: 2,
+          Z_WG_PORT: 2,
+          CUST_TYPE: 2
+        }
+      ],
+      hlwTableData: [
+        {
+          CIRCUIT_ID: '2016-05-03',
+          CIRCUIT_NO: '互联网一',
+          BUSINESS_IDENTITY: '开发区C600-4',
+          RES_TYPE: '135.20.98.226',
+          CIRCUIT_RATE_CHINA: 'ZTE',
+          CIRCUIT_TYPE_CHINA: 'C600',
+          CUST_NAME: 58,
+          A_EQP: 0,
+          A_REGION: 0,
+          A_PORT: 2,
+          Z_EQP: 2,
+          Z_REGION: 2,
+          Z_PORT: 2,
+          A_WG_NE: 2,
+          Z_WG_NE: 2,
+          A_WG_PORT: 2,
+          Z_WG_PORT: 2,
+          CUST_TYPE: 2
+        }, {
+          CIRCUIT_ID: '2016-05-03',
+          CIRCUIT_NO: '互联网二',
+          BUSINESS_IDENTITY: '开发区C600-4',
+          RES_TYPE: '135.20.98.226',
+          CIRCUIT_RATE_CHINA: 'ZTE',
+          CIRCUIT_TYPE_CHINA: 'C600',
+          CUST_NAME: 58,
+          A_EQP: 0,
+          A_REGION: 0,
+          A_PORT: 2,
+          Z_EQP: 2,
+          Z_REGION: 2,
+          Z_PORT: 2,
+          A_WG_NE: 2,
+          Z_WG_NE: 2,
+          A_WG_PORT: 2,
+          Z_WG_PORT: 2,
+          CUST_TYPE: 2
+        }, {
+          CIRCUIT_ID: '2016-05-03',
+          CIRCUIT_NO: '互联网三',
+          BUSINESS_IDENTITY: '开发区C600-4',
+          RES_TYPE: '135.20.98.226',
+          CIRCUIT_RATE_CHINA: 'ZTE',
+          CIRCUIT_TYPE_CHINA: 'C600',
+          CUST_NAME: 58,
+          A_EQP: 0,
+          A_REGION: 0,
+          A_PORT: 2,
+          Z_EQP: 2,
+          Z_REGION: 2,
+          Z_PORT: 2,
+          A_WG_NE: 2,
+          Z_WG_NE: 2,
+          A_WG_PORT: 2,
+          Z_WG_PORT: 2,
+          CUST_TYPE: 2
+        }
+      ],
+      tableData: [],
+      tableHeader: {},
+      ytwTableHeader: {
+        CIRCUIT_ID: "电路ID",
+        CIRCUIT_NO: "电路编号",
+        SERIAL_NO: "SN",
+        BUSINESS_IDENTITY: "业务号码",
+        // CITY_A_T: "A端地市",
+        A_REGION: "A端地市",
+        // CITY_Z_T: "Z端地市",
+        Z_REGION: "Z端地市",
+        // A_PORT_ID_T: "A端资源端口",
+        A_PORT: "A端资源端口",
+        // Z_PORT_ID_TZ: "Z端资源端口",
+        Z_PORT: "Z端资源端口",
+        ROUTE_NAME: "路由段",
+        CIRCUIT_CUST_T: "客户名称",
+        A_WG_NE: "A端网管设备",
+        Z_WG_NE: "Z端网管设备",
+        A_WG_PORT: "A端网管端口",
+        Z_WG_PORT: "Z端网管端口",
+        CUST_TYPE: "客户类型"
+      },
+      hlwTableHeader: {
+        CIRCUIT_ID: "电路ID",
+        CIRCUIT_NO: "电路编号",
+        BUSINESS_IDENTITY: "业务号码",
+        RES_TYPE: "资源类型",
+        CIRCUIT_RATE_CHINA: "电路速率",
+        CIRCUIT_TYPE_CHINA: "电路类型",
+        CUST_NAME: "客户名称",
+        A_EQP: "A端资源设备",
+        A_REGION: "A端地市",
+        A_PORT: "A端资源端口",
+        Z_EQP: "Z端资源设备",
+        Z_REGION: "Z端地市",
+        Z_PORT: "A端资源端口",
+        A_WG_NE: "A端网管设备",
+        Z_WG_NE: "Z端网管设备",
+        A_WG_PORT: "A端网管端口",
+        Z_WG_PORT: "Z端网管端口",
+        CUST_TYPE: "客户类型"
+      },
+      uploadParams: {},//上传文件时的其他参数
+      fileList: []
+    },
+    methods:{
+      checkIpAddr: function(ipAddr){
+        var exp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+        var reg = ipAddr.match(exp);
+        if(reg == null) {
+          console.log("您输入的IP地址不合法！");
+          return false;
+        };
+        return true;
+      },
+      /**
+       * Date类型的时间格式化成标准的24小时格式 yyyy-MM-dd HH:mm:ss
+       * @param date
+       * @returns {string}
+       */
+      dateFormat: function (date){
+        var year = (date.getFullYear()).toString(),
+            month = (date.getMonth() + 1).toString();
+        if(month <= 9){
+          month = '0' + month;
+        };
+        var day = (date.getDate()).toString(),
+            hour = (date.getHours()).toString(),
+            min = (date.getMinutes()).toString(),
+            minNum = date.getSeconds();
+        if(day <= 9){
+          day = '0' + day;
+        };
+        if(hour <= 9){
+          hour = '0' + hour;
+        };
+        if(min <= 9){
+          min = '0' + min;
+        };
+        var sec = (date.getSeconds()).toString(),
+            secNum = date.getSeconds();
+        if(secNum <= 9){
+          sec = '0' + sec;
+        };
+        var newTime = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+        return newTime;
+      },
+      paramHandleNull: function(val) {
+        if (val == "null" || val == null || val == undefined || val == "undefined") {
+          return "";
+        }
+        return val;
+      },
+      handleSizeChange: function(val) {
+        this.currentPage = 1;
+        this.pageSize = val;
+      },
+      handleCurrentChange: function(val) {
+        this.currentPage = val;
+        this.queryCircuitsInfo();
+      },
+
+
+      handleChange: function (value) {
+        console.log(value);
+      },
+      //电路信息编辑
+      circuitInfoEdit: function (dataRow) {
+        console.log("*** circuitInfoEdit *** 电路信息：",dataRow)
+
+        var self = this;
+        self.editWindowVisible = true;
+        self.currentData = dataRow;
+        $("#circuitIdDiv").html(dataRow.CIRCUIT_ID);
+        $("#circuitNoDiv").html(dataRow.CIRCUIT_NO);
+        self.aPortDev = dataRow.a_wg_ne;
+        self.aManPort = dataRow.a_wg_port;
+        self.zPortDev = dataRow.z_wg_ne;
+        self.zManPort = dataRow.z_wg_port;
+        self.customerType = dataRow.cust_type;
+      },
+      //电路信息查询
+      queryCircuitsInfo: function () {
+        var self = this;
+        console.log("*** queryCircuitsInfo *** 资源类型：",this.resourceType,"，电路编号：",this.circuitNumberCon,"，客户名称：",this.customerName,"，业务号码：",this.businessNumber,"，a端地市：",this.aPortCity,"，z端地市：",this.zPortCity)
+
+        $.ajax({
+          // url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+          url: this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!queryCircuitList.action",//要请求的服务器url
+          type: "post",//请求方式
+          data: {
+            startRow: this.currentPage,
+            pageSize: this.pageSize,
+            resourceType: this.resourceType,
+            circuitNO: this.circuitNumberCon == null ? '' : this.circuitNumberCon,
+            customerName: this.customerName,
+            businessNo: this.businessNumber,
+            aCity: this.aPortCity.toString(),
+            zCity: this.zPortCity.toString()
+          },
+          success: function(response){//函数会在服务器执行成功后执行，result就是服务器返回结果
+            console.log("*** queryCircuitsInfo *** 111111111111 *** response: ",response,typeof response);
+
+            if (response == null || response == "" || response == "{}") {
+              self.$message.error('数据查询失败！请稍后重试！');
+            } else {
+              response = JSON.parse(response);
+              console.log("*** queryCircuitsInfo *** response: ",response.datas,typeof response);
+              if (self.currentPage == 1) {
+                if (parseInt(self.resourceType) == 1) {//以太网专线
+                  self.tableHeader = self.ytwTableHeader;
+                } else {//互联网专线
+                  self.tableHeader = self.hlwTableHeader;
+                }
+              }
+
+              self.tableData = response.datas;
+              self.total = response.total;
+            }
+          },
+          error: function() {
+            self.$message.error('数据查询失败！请稍后重试！');
+          }
+        });
+
+
+      },
+      //A端和Z端地市信息查询
+      queryCityInfo: function () {
+        console.log("*** queryCityInfo *** ")
+        var self = this;
+        $.ajax({
+          // url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+          url: this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!queryProvinceList.action",//要请求的服务器url
+          type: "post",//请求方式
+          success: function(response){//函数会在服务器执行成功后执行，result就是服务器返回结果
+            response = JSON.parse(response);
+            console.log("*** queryCityInfo *** response: ",response,typeof response);
+            if (response != null) {
+              self.aPortCitys = response;
+              self.zPortCitys = response;
+            }
+          },
+          error: function() {
+            self.$message.error('数据查询失败！请稍后重试！');
+          }
+        });
+      },
+      //保存电路信息查询
+      saveCircuitInfo: function () {
+        var self = this;
+
+        var params = {};
+        params.circuitId = this.currentData.CIRCUIT_ID;
+        params.circuitNO = this.currentData.CIRCUIT_NO;
+        if (parseInt(this.resourceType) == 1) {//以太网专线
+          params.serialNo = this.currentData.SERIAL_NO;
+        }
+        params.aWgNe = this.aPortDev;
+        params.aWgPort = this.aManPort;
+        params.zWgNe = this.zPortDev;
+        params.zWgPort = this.zManPort;
+        params.custType = this.customerType;
+
+        console.log("*** saveCircuitInfo *** 参数：",params)
+
+        $.ajax({
+          // url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+          url: this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!saveCircuitInfo.action",//要请求的服务器url
+          type: "post",//请求方式
+          data: params,
+          success: function(response){//函数会在服务器执行成功后执行，response就是服务器返回结果
+            console.log("*** saveCircuitInfo *** response: ",response,typeof response);
+            self.$message.success("更新结果：" + response);
+          },
+          error: function() {
+            self.$message.error('数据查询失败！请稍后重试！');
+          }
+        });
+
+      },
+      //删除电路
+      deleteCircuit: function () {
+        var self = this;
+
+        var params = {};
+        params.circuitId = this.currentData.CIRCUIT_ID;
+        params.circuitNO = this.currentData.CIRCUIT_NO;
+        if (parseInt(this.resourceType) == 1) {//以太网专线
+          params.serialNo = this.currentData.SERIAL_NO;
+        }
+
+        console.log("*** deleteCircuit *** 参数：",params)
+
+        $.ajax({
+          // url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+          url: this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!deleteCircuit.action",//要请求的服务器url
+          type: "post",//请求方式
+          data: params,
+          success: function(response){//函数会在服务器执行成功后执行，response就是服务器返回结果
+            console.log("*** deleteCircuit *** response: ",response,typeof response);
+            self.$message.success("更新结果：" + response);
+          },
+          error: function() {
+            self.$message.error('数据查询失败！请稍后重试！');
+          }
+        });
+
+      },
+      //批量 导入/更新 电路信息
+      importCircuitsInfo: function () {
+        // var self = this;
+        console.log("*** importCircuitsInfo *** 电路id：",this.circuitId,"，电路编号：",this.circuitNumber,"，A端网管设备：",this.aPortDev,"，A端网管端口：",this.aManPort,"，Z端网管设备：",this.zPortDev,"，Z端网管端口：",this.zManPort,"，客户类型：",this.customerType)
+
+      },
+      //导出电路信息
+      exportCircuitsInfo: function () {
+        var self = this;
+        console.log("*** exportCircuitsInfo *** 电路id：",this.circuitId,"，电路编号：",this.circuitNumber,"，A端网管设备：",this.aPortDev,"，A端网管端口：",this.aManPort,"，Z端网管设备：",this.zPortDev,"，Z端网管端口：",this.zManPort,"，客户类型：",this.customerType)
+
+        window.open(this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!exportCircuitList.action?resourceType=" + this.paramHandleNull(this.resourceType));
+      },
+      queryAWgDev: function () {
+        this.queryWgDev(this.aPortDev);
+      },
+      queryZWgDev: function () {
+        this.queryWgDev(this.zPortDev);
+      },
+      queryAWgPort: function () {
+        this.queryWgPort(this.aPortDev);
+      },
+      queryZWgPort: function () {
+        this.queryWgPort(this.zPortDev);
+      },
+      //查询网管设备
+      queryWgDev: function (devName) {
+        var self = this;
+
+        var params = {};
+        params.circuitId = this.currentData.CIRCUIT_ID;
+        params.circuitNO = this.currentData.CIRCUIT_NO;
+        if (parseInt(this.resourceType) == 1) {//以太网专线
+          params.serialNo = this.currentData.SERIAL_NO;
+        }
+        params.neName = devName;
+
+        console.log("*** 查询网管设备 *** 参数：",params)
+
+        $.ajax({
+          // url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+          url: this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!queryNeListByName.action",//要请求的服务器url
+          type: "post",//请求方式
+          data: params,
+          success: function(response){//函数会在服务器执行成功后执行，response就是服务器返回结果
+            console.log("*** 查询网管设备 *** response: ",response,typeof response);
+          },
+          error: function() {
+            self.$message.error('数据查询失败！请稍后重试！');
+          }
+        });
+
+      },
+      //查询网管端口
+      queryWgPort: function (devName) {
+        var self = this;
+
+        var params = {};
+        params.circuitId = this.currentData.CIRCUIT_ID;
+        params.circuitNO = this.currentData.CIRCUIT_NO;
+        if (parseInt(this.resourceType) == 1) {//以太网专线
+          params.serialNo = this.currentData.SERIAL_NO;
+        }
+        params.neName = devName;
+
+        console.log("*** 查询网管端口 *** 参数：",params)
+
+        $.ajax({
+          // url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+          url: this.basePath + "/cms/cmsnew/zqcircuitmanage/ZQCircuitManageAction!queryPortListByNeName.action",//要请求的服务器url
+          type: "post",//请求方式
+          data: params,
+          success: function(response){//函数会在服务器执行成功后执行，response就是服务器返回结果
+            console.log("*** 查询网管端口 *** response: ",response,typeof response);
+          },
+          error: function() {
+            self.$message.error('数据查询失败！请稍后重试！');
+          }
+        });
+
+      },
+      // -- 上传文件（导入/更新）相关 -- start
+      handleRemove: function (file, fileList) {
+        console.log("*** handleRemove *** file：",file,"，fileList",fileList);
+      },
+      handlePreview: function (file) {
+        console.log("*** handlePreview *** file：",file);
+      },
+      handleExceed: function (files, fileList) {
+        console.log("*** handleExceed *** file：",files,"，fileList",fileList);
+        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove: function (file, fileList) {
+        console.log("*** beforeRemove *** file：",file,"，fileList",fileList);
+      },
+      beforeAvatarUpload: function (file) {
+        console.log("*** beforeAvatarUpload *** file：",file,"，fileType：",file.type,"，fileSize：",file.size);
+
+        // var params = {};
+        // params.resourceType = this.resourceType;
+        // params.circuitListFile = file;
+        // this.uploadParams = params;
+
+        var textSuffix = file.name.substr(file.name.lastIndexOf(".") + 1,file.name.length);
+        console.log("22222",textSuffix)
+        console.log("file.type",file.type)
+        const isExcel = (file.type === 'application/vnd.ms-excel' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isExcel) {
+          this.$message.error('上传文件只能是 xls/xlsx 格式!');
+        }
+        if (!isLt5M) {
+          this.$message.error('上传文件大小不能超过 5MB!');
+        }
+        return isExcel && isLt5M;
+      },
+      handleProgress: function (event, file, fileList) {
+        console.log("*** handleProgress *** event：",event,"，file：",file,"，fileList",fileList);
+      },
+      uploadSuccess: function (response, file, fileList) {
+        console.log("*** uploadSuccess *** response：",response,"，file：",file,"，fileList",fileList);
+        this.$message({
+          message: '文件 ' + file.name + ' 上传成功',
+          type: 'success'
+        });
+      },
+      uploadError: function (err, file, fileList) {
+        console.log("*** uploadError *** err：",err,"，file：",file,"，fileList",fileList);
+        this.$message.error('文件 ' + file.name + ' 上传失败！请稍后重试！');
+      },
+
+
+      // -- 上传文件（导入/更新）相关 -- end
+
+
+
+    },
+    created: function () {
+      this.tableHeader = this.ytwTableHeader;
+      this.tableData = this.ytwTableData;
+
+      //初始化查询地市信息
+      this.queryCityInfo();
+      //初始化查询电路信息
+      this.queryCircuitsInfo();
+    }
+
+  })
+
+
+</script>
+</body>
+</html>

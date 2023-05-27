@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>政企电路及性能监控</title>
+
+  <!-- 本地依赖 -->
+  <link rel="stylesheet" type="text/css" href="../../static/plugins/element-ui@2.8.2/theme-chalk/index.css" />
+  <script src="../../static/plugins/jQuery/jquery-3.6.0.min.js"></script>
+  <script src="../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../static/plugins/element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../static/plugins/moment/moment.js" type="text/javascript" charset="utf-8"></script>
+  <!-- 本地依赖 -->
+
+  <style>
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <template>
+    <div>
+      <el-button type="primary" icon="el-icon-search" @click="queryCircuitsInfo">查询</el-button>
+    </div>
+    <el-table
+        :data="tableData"
+        style="width: 100%">
+      <el-table-column :prop="index" :label="item" sortable show-overflow-tooltip v-for="(item, index) in tableHeader"
+                       :key="index">
+      </el-table-column>
+    </el-table>
+  </template>
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      currentPage: 1,
+      pageSize: 3,
+      total: 21,
+      tableHeader: {
+        date: "日期",
+        name: "姓名",
+        address: "地址"
+      },
+      tableData: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        },
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        },
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }
+      ],
+      tableDataOther: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        },
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        },
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }
+      ]
+    },
+    methods:{
+      checkIpAddr: function(ipAddr){
+        var exp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+        var reg = ipAddr.match(exp);
+        if(reg == null) {
+          console.log("您输入的IP地址不合法！");
+          return false;
+        };
+        return true;
+      },
+      /**
+       * Date类型的时间格式化成标准的24小时格式 yyyy-MM-dd HH:mm:ss
+       * @param date
+       * @returns {string}
+       */
+      dateFormat: function (date){
+        var year = (date.getFullYear()).toString(),
+            month = (date.getMonth() + 1).toString();
+        if(month <= 9){
+          month = '0' + month;
+        };
+        var day = (date.getDate()).toString(),
+            hour = (date.getHours()).toString(),
+            min = (date.getMinutes()).toString(),
+            minNum = date.getSeconds();
+        if(day <= 9){
+          day = '0' + day;
+        };
+        if(hour <= 9){
+          hour = '0' + hour;
+        };
+        if(min <= 9){
+          min = '0' + min;
+        };
+        var sec = (date.getSeconds()).toString(),
+            secNum = date.getSeconds();
+        if(secNum <= 9){
+          sec = '0' + sec;
+        };
+        var newTime = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+        return newTime;
+      },
+      queryDatas: function (){
+        var header = {};
+        header.CIRCUIT_ID = "电路id";
+        header.CIRCUIT_NO = "电路编号";
+        header.SN = "SN";
+        header.BUSINESS_IDENTITY = "业务号码";
+        header.CITY_A_T = "A端地市";
+        header.CITY_Z_T = "Z端地市";
+        header.A_PORT_ID_T = "A端资源端口";
+        var datas = [];
+        var data01 = {};
+        data01.CIRCUIT_ID = "电路001";
+        data01.CIRCUIT_NO = "001";
+        data01.SN = "SN001";
+        data01.BUSINESS_IDENTITY = "188888";
+        data01.CITY_A_T = "南京";
+        data01.CITY_Z_T = "苏州";
+        data01.A_PORT_ID_T = "8699";
+        var data02 = {};
+        data02.CIRCUIT_ID = "电路002";
+        data02.CIRCUIT_NO = "002";
+        data02.SN = "SN002";
+        data02.BUSINESS_IDENTITY = "19999";
+        data02.CITY_A_T = "天津";
+        data02.CITY_Z_T = "无锡";
+        data02.A_PORT_ID_T = "8088";
+        datas.push(data01);
+        datas.push(data02);
+        this.tableHeader = header;
+        this.tableData = datas;
+      }
+    },
+    created: function () {
+      this.queryDatas();
+    }
+
+  })
+</script>
+</body>
+</html>

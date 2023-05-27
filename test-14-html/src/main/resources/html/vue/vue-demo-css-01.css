@@ -1,0 +1,17 @@
+#app {
+    width: 100%;
+    height: auto;
+}
+#yj-table {
+    width: 100%;
+    height: 800px;
+}
+.block {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+}
+.el-table_bode height {
+    height: 800px;
+}

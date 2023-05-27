@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .mytable{
+            width: 800px;
+            background-color: whitesmoke;
+            /* 相邻边被合并 */
+            border-collapse:collapse;
+            border-spacing:0;
+            margin:10px;
+        }
+        .mytable thead{
+            background-color:gainsboro;
+        }
+        .mytable tbody {
+            display: block;
+            height: 400px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .mytable thead,.mytable tbody tr,.mytable tfoot tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            font-size: 16px;
+            text-align: center;
+            border-bottom: 1px solid gray;
+        }
+        .mytable thead {
+            /* 预留滚动overflow-y的空间 */
+            width: calc(100% - 1em);
+            height: 30px;
+        }
+        .mytable td{
+            border-left: 1px solid gray;
+        }
+        .mytable tfoot tr{
+            border: none;
+        }
+        .mytable tfoot td{
+            text-align: right;
+            padding-right: 1em;
+            border: none;
+        }
+        .mytable .index1{
+            width: 50px;
+        }
+        .mytable .index2{
+            width: 100px;
+        }
+    </style>
+</head>
+ 
+<body>
+    <div style="width: 100%;">
+        <table class="mytable" >
+            <thead>
+                <tr>
+                    <td class="index1">序号</td>
+                    <td class="index2">列1</td>
+                    <td>列2</td>
+                    <td>列3</td>
+                    <td>列4</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列列列列列列列列列列</td>
+                    <td>列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+                <tr>
+                    <td class="index1">1</td>
+                    <td class="index2">列列列列列列列列列</td>
+                    <td>列列列</td>
+                    <td>列列列列列列</td>
+                    <td>列列列列列列列列列列列列列列列列列列</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">共100条</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+</body>
+    
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>html使用 vue + element-ui案例</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../test-03-public/src/main/resources/static/plugins/element-ui@2.8.2/theme-chalk/index.css" />
+    <script src="../../../../../../test-03-public/src/main/resources/static/plugins/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="../../../../../../test-03-public/src/main/resources/static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../../../../test-03-public/src/main/resources/static/plugins/element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+<div id="app">
+    <el-button @click="test()">按钮</el-button>
+    <el-dialog :visible.sync="visible" title="标题">
+        <p>弹个窗</p>
+    </el-dialog>
+    <p>{{uname}}</p>
+    <input type="text" value="" v-model="uname" />
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            visible: false,
+            uname:'lr'
+        },
+        methods:{
+            test(){
+                this.visible= true
+                this.uname='wjj';
+                console.log($('input').val())
+            }
+        }
+
+    })
+</script>
+</body>
+</html>

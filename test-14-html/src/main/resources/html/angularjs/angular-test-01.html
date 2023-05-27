@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS测试鼠标单击、移入、移除事件</title>
+
+<!--    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>-->
+    <script src="../../static/plugins/angular/angular.min.js"></script>
+    <script src="angular-test-01.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myController">
+<div class="ngift" ng-if="username == null || username == '' || username == 'undefined'">的房间里的是</div>
+<div class="ngift" ng-if="username != null && username != '' && username != 'undefined'">{{username}}</div>
+
+<div>
+    <button type="button" ng-click="clickEvent()">点我</button>
+</div>
+<br/>
+<div ng-init="show=false" >
+    <p  ng-mouseenter="show=true" ng-mouseleave="show=false">
+        每当鼠标经过元素上方span元素中的内容会显示，离开时内容则隐藏
+    </p>
+    <span ng-show="show">显示内容</span>
+</div>
+<br/>
+<div>
+    <button type="button" ng-mouseleave="mouseEnterEvent()">鼠标移到我头上，给你显示个框</button>
+</div>
+<div id="mouseEnterContent" style="display: none">鼠标移到他头上就可以看见我了</div>
+<br/>
+<div id="floatDiv" style="display: none; position: absolute; background-color: #7d8489; width: 150px;">鼠标移到他头上就可以看见我了</div>
+<div>
+    <input ht-input="item.PRO_NAME_" desc="项目名称" class="form-control" readonly="" id="input" ng-mouseover="spSframe()" type="text" ng-model="item.PRO_NAME_" permission="permission.fields.gc_repay_bill.PRO_NAME_" ht-validate="{&quot;required&quot;:false}"/>
+</div>
+
+</body>
+</html>

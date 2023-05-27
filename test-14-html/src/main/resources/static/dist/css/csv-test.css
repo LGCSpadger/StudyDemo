@@ -1,0 +1,121 @@
+.csv {
+	width: 100%;
+	height: 100%;
+}
+.csv-header {
+	width: 100%;
+	height: 20%;
+}
+.csv-body {
+	width: 100%;
+	height: 80%;
+}
+table {
+	width: 100%;
+	font-size: 16px;
+	table-layout: fixed;
+	empty-cells: show;
+	border-collapse: collapse;
+	margin: 20px auto;
+	border: 1px solid #cad9ea;
+	color: #666;
+}
+th {
+	background: linear-gradient(#f3faff, #f5fafe);
+	height: 40px;
+	overflow: hidden;
+}
+td {
+	height: 30px;
+	text-align: center;
+}
+td, th {
+	border: 1px solid #cad9ea;
+	padding: 0 1em 0;
+}
+tr:nth-child(odd) {
+	background-color: #f5fafe;
+}
+
+/*button*/
+.export-btn {
+    margin-right: 2%;
+}
+.readsql-btn {
+    margin-right: 2%;
+}
+#create-btn {
+    background-color: #1AAD19;
+    color: #FFFFFF;
+    border: 1px solid #1AAD19;
+    cursor: pointer;
+    border-radius: 3px;
+    width: 100px;
+    height: 36px;
+    border: none;
+}
+
+
+/*弹框*/
+.delModel{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+}
+.delModel-content{
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+}
+.delModel-header {
+    width: 100%;
+}
+#database-message {
+    width: 100%;
+    margin-bottom: 15px;
+}
+#sql-message {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.message-name {
+    width: 15%;
+    display: inline-block;
+    text-align: right;
+}
+.message-content {
+    width: 80%;
+    border: 1px solid;
+    outline: none;
+}
+#inputBox{
+    max-height:300px;
+    overflow-y: auto;
+}
+.delModel-footer{
+    overflow: hidden;
+}
+#cancelBtn {
+    float: right;
+    margin-right: 2%;
+}
+img {
+    width: 30%;
+    height: 80%;
+    align-content: flex-end;
+}
+
+#div_toop {
+    background-color:#93ee15;
+}

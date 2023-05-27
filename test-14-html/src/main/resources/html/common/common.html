@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试公共js方法</title>
+
+<!--    <script src="../../static/plugins/jQuery/jquery-3.6.0.min.js"></script>-->
+    <script src="common.js" type="text/javascript"></script>
+
+</head>
+<body>
+<br/>
+<div><button type="button" onclick="zzctcEvent()">遮罩层弹窗</button></div>
+<br/>
+
+<!-- 弹窗显示 即顶层显示 -->
+<div id="popDiv"
+     style="z-index: 99; display: none; position: absolute; margin-top: 20%; margin-left: 40%; background-color: #FFF;">
+    弹窗页面
+</div>
+
+<!-- 底层遮罩层 即遮盖页面 -->
+<div id="popupbackground" class="light_content"></div>
+<div id="bg"
+     style="display: none; background-color: #ccc; width: 100%; position: absolute; height: 100%; opacity: 0.5; z-index: 1;">
+    弹窗页面111
+</div>
+</body>
+</html>

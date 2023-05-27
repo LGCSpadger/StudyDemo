@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新疆预见维护</title>
+
+    <!-- 本地依赖 -->
+<!--    <link rel="stylesheet" type="text/css" href="../../static/plugins/element-ui@2.8.2/theme-chalk/index.css" />-->
+<!--    <script src="../../static/plugins/jQuery/jquery-3.6.0.min.js"></script>-->
+<!--    <script src="../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>-->
+<!--    <script src="../../static/plugins/element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>-->
+<!--    <script src="../../static/plugins/moment/moment.js" type="text/javascript" charset="utf-8"></script>-->
+    <!-- 本地依赖 -->
+
+    <!-- 服务器依赖 -->
+    <link rel="stylesheet" type="text/css" href="./element-ui@2.8.2/theme-chalk/index.css" />
+    <script src="./jQuery/jquery-3.6.0.min.js"></script>
+    <script src="./vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./element-ui@2.8.2/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./moment/moment.js" type="text/javascript" charset="utf-8"></script>
+<!--    <meta http-equiv="x-ua-compatible" content="IE=Edge" >-->
+    <!-- 服务器依赖 -->
+
+    <style>
+        #head {
+            width: 100%;
+            height: 15%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        #yj-table {
+            width: 100%;
+            height: auto;
+        }
+        .column {
+            width: 33%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .column1 {
+            justify-content: center;
+        }
+        .column2 {
+            justify-content: flex-start;
+        }
+        .column2_el1 {
+            width: 53%;
+            height: 100%;
+        }
+        .column2_el2 {
+            width: 25%;
+            height: 100%;
+        }
+        .gzsbsh {
+            margin-left: 25%;
+        }
+        el-dialog title {
+            font-weight: bolder;
+        }
+        .gzsbs {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <template>
+        <div id="head">
+            <div class="column column1">
+                <h1>设备预见维护列表</h1>
+            </div>
+            <div class="column column2">
+                <div class="column2_el1">
+                    <div class="yjrqtitle">
+                        <h3>预见日期</h3>
+                    </div>
+                    <div class="yjrq">
+                        <div class="block">
+<!--                            <el-date-picker-->
+<!--                                    v-model="value2"-->
+<!--                                    type="date"-->
+<!--                                    placeholder="选择日期"-->
+<!--                                    :picker-options="pickerOptions"-->
+<!--                                    @change="dateChange()">-->
+<!--                            </el-date-picker>-->
+
+                            <input type="text" class="layui-input" id="test1">
+                        </div>
+                    </div>
+                </div>
+                <div class="column2_el2">
+                    <div class="gzsbstitle">
+                        <h3>故障设备数</h3>
+                    </div>
+                    <div class="gzsbs">
+                        <h4 class="gzsbsh"><u>{{tableData.length}}</u></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="column column3">
+                <div>
+                    <span>输入设备IP查询：</span>
+                </div>
+                <div>
+                    <el-input @blur="getDataByDevIp(input)" v-model="input" placeholder="请输入内容"></el-input>
+                </div>
+            </div>
+        </div>
+        <div id="yj-table">
+            <el-table
+                    :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                    :header-cell-style="{background:'#eef1f6',color:'#000000'}"
+                    border
+                    :row-style="styleBack"
+                    style="width: 100%">
+                <el-table-column
+                        prop="xh"
+                        label="序号"
+                        type="index"
+                        :index="indexAdd"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="OLT_DATE"
+                        label="日期"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="PROVINCE"
+                        label="属地"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="DEVICE_NAME"
+                        label="设备名称"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="BRAS_OLT_IP"
+                        label="设备IP"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="VENDOR_NAME"
+                        label="设备厂家"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="DEVICE_MODEL"
+                        label="设备型号"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="SCORE"
+                        label="异常分数"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="PORT_FLOW_IS_ABNORMAL"
+                        label="端口流量"
+                        align="center"
+                        highlight-current-row="">
+                    <template slot-scope="scope">
+                        <i v-if="scope.row.PORT_FLOW_IS_ABNORMAL == 0" style="color: red;cursor: pointer;" class="el-icon-s-opportunity" @click="getPortFlowDetail(scope.row.BRAS_OLT_IP)"></i>
+                        <i v-if="scope.row.PORT_FLOW_IS_ABNORMAL != 0" style="color: green;cursor: pointer;" class="el-icon-s-opportunity" @click="getPortFlowDetail(scope.row.BRAS_OLT_IP)"></i>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="LIGHT_POWER_IS_ABNORMAL"
+                        label="光功率"
+                        align="center">
+                    <template slot-scope="scope">
+                        <i v-if="scope.row.LIGHT_POWER_IS_ABNORMAL == 0" style="color: red;cursor: pointer;" class="el-icon-s-opportunity" @click="getLightPowerDetail(scope.row.BRAS_OLT_IP)"></i>
+                        <i v-if="scope.row.LIGHT_POWER_IS_ABNORMAL != 0" style="color: green;cursor: pointer;" class="el-icon-s-opportunity" @click="getLightPowerDetail(scope.row.BRAS_OLT_IP)"></i>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="ALARM_COUNT"
+                        label="告警数"
+                        align="center">
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="block" style="display: flex;justify-content: flex-end;align-items: center;margin-top: 10px;margin-right: 15px">
+            <el-pagination
+                    background
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="pageSize"
+                    layout="total, prev, pager, next"
+                    :total="tableData.length">
+            </el-pagination>
+        </div>
+        <el-dialog title="光功率" :visible.sync="lightPowerVisible" center>
+            <el-table :data="lightPowerData" max-height="500px" :row-style="lightPowerStyleBack">
+                <el-table-column property="DEVICE_NAME" label="设备名称" align="center"></el-table-column>
+                <el-table-column property="OLTIP" label="IP" align="center"></el-table-column>
+                <el-table-column property="OLTPORTINFO" label="端口名称" align="center"></el-table-column>
+                <el-table-column property="OLTSENDPOWER" label="发光功率" align="center"></el-table-column>
+                <el-table-column property="OLTRECVPOWER" label="收光功率" align="center"></el-table-column>
+            </el-table>
+        </el-dialog>
+        <el-dialog title="端口流量" :visible.sync="portFlowVisible" center>
+            <el-table :data="portFlowData" max-height="500px" :row-style="portFlowStyleBack">
+                <el-table-column property="DEVICE_NAME" label="设备名称" align="center"></el-table-column>
+                <el-table-column property="LOOPBACK_IP" label="IP" align="center"></el-table-column>
+                <el-table-column property="PORT_INFO" label="端口名称" align="center"></el-table-column>
+                <el-table-column property="IFINOCTETSBPSMAX" label="流入（bps）" align="center"></el-table-column>
+                <el-table-column property="IFOUTOCTETSBPSMAX" label="流出（bps）" align="center"></el-table-column>
+                <el-table-column property="IF_REAL_SPEED" label="带宽（Mbps）" align="center"></el-table-column>
+                <el-table-column label="带宽利用率" align="center">
+                    <el-table-column property="IN_DKLYL" label="流入" align="center"></el-table-column>
+                    <el-table-column property="OUT_DKLYL" label="流出" align="center"></el-table-column>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </template>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            lightPowerVisible: false,
+            portFlowVisible: false,
+            value2: new Date(new Date().getTime() - 3600 * 1000 * 24),
+            pickerOptions: {
+                disabledDate: function(time) {
+                    return time.getTime() >= new Date(new Date().getTime() - 3600 * 1000 * 24)
+                }
+            },
+            portFlowData: [
+                /*{
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '80.23%',
+                    OUT_DKLYL: '88.56%'
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    IFINOCTETSBPSMAX: 168564,
+                    IFOUTOCTETSBPSMAX: 51865465,
+                    IF_REAL_SPEED: 20000,
+                    IN_DKLYL: '91.23%',
+                    OUT_DKLYL: '88.56%'
+                }*/
+            ],
+            lightPowerData: [
+                /*{
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    OLTSENDPOWER: 1,
+                    OLTRECVPOWER: -24.10
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    OLTSENDPOWER: 4.25,
+                    OLTRECVPOWER: -24.10
+                }, {
+                    DEVICE_NAME: '设备以',
+                    LOOPBACK_IP: '10.145.23.46',
+                    PORT_INFO: '上海市普陀区金沙江路 1518 弄',
+                    OLTSENDPOWER: 4.25,
+                    OLTRECVPOWER: -24.10
+                }*/
+            ],
+            tableData: [
+                /*{
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 1,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 1,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }, {
+                    OLT_DATE: '2016-05-03',
+                    PROVINCE: '乌鲁木齐',
+                    DEVICE_NAME: '开发区C600-4',
+                    BRAS_OLT_IP: '135.20.98.226',
+                    VENDOR_ID: 'ZTE',
+                    DEVICE_MODEL: 'C600',
+                    SCORE: 58,
+                    PORT_FLOW_IS_ABNORMAL: 0,
+                    LIGHT_POWER_IS_ABNORMAL: 0,
+                    ALARM_COUNT: 2
+                }*/
+            ],
+            currentPage: 1,
+            pageSize: 10,
+            total: 21,
+            input: ''
+        },
+        methods:{
+            styleBack:function(val){//{row}
+                if(val.row){
+                    var row = val.row;
+                    if (row.LIGHT_POWER_IS_ABNORMAL == 0 || row.PORT_FLOW_IS_ABNORMAL == 0) {
+                        return { backgroundColor: "#E5EECC" };
+                    }else {
+                        return { backgroundColor: "#fff" };
+                    }
+                }
+            },
+            lightPowerStyleBack:function(val){
+                if(val.row){
+                    var row = val.row;
+                    if ((parseFloat(row.OLTRECVPOWER) > 0 || parseFloat(row.OLTRECVPOWER) < -25) || (parseFloat(row.OLTSENDPOWER) > 6 || parseFloat(row.OLTSENDPOWER) < 2)) {
+                        return { backgroundColor: "#E5EECC" };
+                    }else {
+                        return { backgroundColor: "#fff" };
+                    }
+                }
+            },
+            portFlowStyleBack:function(val){
+                if(val.row){
+                    var row = val.row;
+                    if (parseFloat(row.IN_DKLYL.replace("%","")) > 90 || parseFloat(row.OUT_DKLYL.replace("%","")) > 90) {
+                        return { backgroundColor: "#E5EECC" };
+                    }else {
+                        return { backgroundColor: "#fff" };
+                    }
+                }
+            },
+            indexAdd: function(index) {
+                var page = this.currentPage; // 当前页码
+                var pagesize = this.pageSize; // 每页条数
+                return index + 1 + (page - 1) * pagesize;
+            },
+            handleSizeChange: function(val) {
+                this.currentPage = 1;
+                this.pageSize = val;
+            },
+            handleCurrentChange: function(val) {
+                this.currentPage = val;
+                this.getTableData(this.currentPage,this.pageSize,moment(this.value2).format("YYYY-MM-DD"),this.input);
+            },
+            checkIpAddr: function(ipAddr){
+                var exp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+                var reg = ipAddr.match(exp);
+                if(reg == null) {
+                    console.log("您输入的IP地址不合法！");
+                    return false;
+                };
+                return true;
+            },
+            getDataByDevIp: function(devIp) {
+                console.log("devIp: ",devIp)
+                // this.input = devIp;
+                var ipCheckResult = this.checkIpAddr(devIp);
+                console.log("ipCheckResult: ",ipCheckResult)
+                if (ipCheckResult) {
+                    this.getTableData(this.currentPage,this.pageSize,moment(this.value2).format("YYYY-MM-DD"),devIp);
+                } else {
+                    alert("请输入合法的IP地址");
+                }
+            },
+            getTableData: function (currentPage,pageSize,yjrq,devIp) {
+                console.log("首页请求参数: ",this.currentPage,"，",this.pageSize,",",yjrq,"，",devIp)
+                var self = this;
+                console.log("this: ",this)
+                $.ajax({
+                    url: "/ldims/liposs/service/report/eponinspection/Inspection!getDevYjwh.action",//要请求的服务器url
+                    type: "POST",//请求方式
+                    data: {
+                        pageNum: currentPage,
+                        pageSize: pageSize,
+                        yjrq: yjrq,
+                        devIp: devIp
+                    },
+                    success: function(result){//函数会在服务器执行成功后执行，result就是服务器返回结果
+                        if (result != null && result.length > 0 && result != "未查询到数据") {
+                            console.log("result: ",result);
+                            var yjData = JSON.parse(result);
+                            self.tableData = yjData;
+                            console.log("表格数据: ",self.tableData);
+                            self.total = yjData.length;
+                            console.log("总数: ",yjData.length);
+                        } else {
+                            console.log("未请求到 设备预见维护报表数据！！！！");
+                        };
+                    },
+                    error: function() {
+                        console.log("设备预见维护报表数据请求失败！！！！");
+                    }
+                });
+            },
+            getLightPowerDetail: function (devIp) {//光功率明细弹窗
+                console.log("this.value2 light power: ",moment(this.value2).format("YYYY-MM-DD"))
+                var self = this;
+                var year = moment(this.value2).format("YYYY-MM-DD").substring(0,4);
+                var month = moment(this.value2).format("YYYY-MM-DD").substring(5,7);
+                var today = moment(this.value2).format("YYYY-MM-DD").substring(8,10);
+                console.log("111111111",typeof(month))
+                if (month && month[0] == "0") {
+                    month = month.replace("0","");
+                };
+                var tableName = "TAB_OPTICAL_ALL_" + year + "_" + month + "_" + today;
+                console.log("光功率明细弹窗****接口调用参数：",tableName,devIp)
+                $.ajax({
+                    url: "/ldims/liposs/service/report/eponinspection/Inspection!getLightPowerDetail.action",//要请求的服务器url
+                    type: "POST",//请求方式
+                    data: {
+                        tableName: tableName,
+                        devIp: devIp
+                    },
+                    success: function(result){//函数会在服务器执行成功后执行，result就是服务器返回结果
+                        if (result != null && result.length > 0 && result.indexOf("未查询到数据") <= 0) {
+                            console.log("光功率明细弹窗****result: ",result);
+                            var lightPowerInfo = JSON.parse(result);
+                            self.lightPowerData = lightPowerInfo;
+                            console.log("表格数据: ",self.lightPowerData);
+                        } else {
+                            console.log("未请求到 光功率明细 报表数据！！！！");
+                        }
+                        self.lightPowerVisible = true;
+                    },
+                    error: function() {
+                        self.lightPowerVisible = true;
+                        console.log("光功率明细报表数据请求失败！！！！");
+                    }
+                });
+
+                // self.lightPowerVisible = true;
+            },
+            getPortFlowDetail: function (devIp) {//端口流量明细弹窗
+                console.log("this.value2 port flow: ",moment(this.value2).format("YYYY-MM-DD"))
+                var self = this;
+                var year = moment(this.value2).format("YYYY-MM-DD").substring(0,4);
+                var month = moment(this.value2).format("YYYY-MM-DD").substring(5,7);
+                var today = moment(this.value2).format("YYYY-MM-DD").substring(8,10);
+                if (month && month[0] == "0") {
+                    month = month.replace("0","");
+                };
+                if (today && today[0] == "0") {
+                    today = today.replace("0","");
+                };
+                var tableName = "FLUX_HOUR_STAT_" + year + "_" + month + "_" + today;
+                console.log("端口流量明细弹窗****接口调用参数：",tableName,devIp)
+                $.ajax({
+                    url: "/ldims/liposs/service/report/eponinspection/Inspection!getPortFlowDetail.action",//要请求的服务器url
+                    type: "POST",//请求方式
+                    data: {
+                        tableName: tableName,
+                        devIp: devIp
+                    },
+                    success: function(result){//函数会在服务器执行成功后执行，result就是服务器返回结果
+                        if (result != null && result.length > 0 && result.indexOf("未查询到数据") <= 0) {
+                            console.log("端口流量明细弹窗****result: ",result);
+                            var portFlowInfo = JSON.parse(result);
+                            self.portFlowData = portFlowInfo;
+                            console.log("表格数据: ",self.portFlowData);
+                        } else {
+                            console.log("未请求到 端口流量明细数据！！！！");
+                        }
+                        self.portFlowVisible = true;
+                    },
+                    error: function() {
+                        self.portFlowVisible = true;
+                        alert("端口流量明细数据请求失败！！！！");
+                    }
+                });
+
+                // self.portFlowVisible = true;
+
+            },
+            /**
+             * Date类型的时间格式化成标准的24小时格式 yyyy-MM-dd HH:mm:ss
+             * @param date
+             * @returns {string}
+             */
+            dateFormat: function (date){
+                var year = (date.getFullYear()).toString(),
+                month = (date.getMonth() + 1).toString();
+                if(month <= 9){
+                    month = '0' + month;
+                };
+                var day = (date.getDate()).toString(),
+                hour = (date.getHours()).toString(),
+                min = (date.getMinutes()).toString(),
+                minNum = date.getSeconds();
+                if(day <= 9){
+                    day = '0' + day;
+                };
+                if(hour <= 9){
+                    hour = '0' + hour;
+                };
+                if(min <= 9){
+                    min = '0' + min;
+                };
+                var sec = (date.getSeconds()).toString(),
+                secNum = date.getSeconds();
+                if(secNum <= 9){
+                    sec = '0' + sec;
+                };
+                var newTime = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
+                return newTime;
+            },
+            /**
+             * 日期改变事件
+             */
+            dateChange: function () {
+                console.log("选中的日期：",moment(this.value2).format("YYYY-MM-DD"))
+                this.getTableData(this.currentPage,this.pageSize,moment(this.value2).format("YYYY-MM-DD"),this.input);
+            },
+            handleCurrentChange: function (rowData) {
+                console.log("rowData: ",rowData)
+            }
+        },
+        created: function () {
+            this.getTableData(this.currentPage,this.pageSize,moment(this.value2).format("YYYY-MM-DD"),null);
+            this.yjrq = this.dateFormat(new Date()).substring(0,10);
+        }
+
+    })
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/simplecss.css"/>
+    <style type="text/css">
+        .box1{
+            height: 620px;
+            border: 1px solid #ccc;
+            background-color: #CCCCCC;
+        }
+        .box2{
+            height: 620px;
+            border: 1px solid white;
+            text-align: center;
+            line-height: 500px;
+        }
+        .title{
+            text-align:center;
+            margin-top: 2px;
+        }
+        .bottom{
+            text-align: center;
+            margin-top: 552px;
+        }
+        /*弹出框出现后的整体背景样式*/
+        .light_content{
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 1001;
+            opacity: 0.5;
+            filter: alpha(opacity=60);
+        }
+        /*弹出框的样式*/
+        .box{
+            display: none;
+            position: absolute;
+            top: 6%;
+            left: 30%;
+            width:800px;
+            height: 550px;
+            border: 1px solid #CCCCCC;
+            border-radius: 30px;
+            background-color: #CCCCCC;
+            z-index: 1002;
+            overflow: auto;
+
+        }
+        .title2{
+            text-align: center;
+            margin-top:20px
+        }
+        .title2 span{
+            font-size: 30px;
+        }
+        #ipt1{
+            width: 700px;
+            margin-left: 40px;
+            height: 30px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            padding-left: 10px;
+            font-size: 15px;
+        }
+        #ipt2{
+            height: 30px;
+            width: 300px;
+            margin-left: 40px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            padding-left: 10px;
+            margin-top: 20px;
+        }
+        #ipt3{
+            height: 30px;
+            width: 300px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            padding-left: 10px;
+            margin-left: 80px;
+        }
+        #ipt4{
+            height: 30px;
+            width: 245px;
+            margin-left: 40px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            padding-left: 10px;
+            margin-top: 20px;
+        }
+        #ipt5{
+            height: 30px;
+            width: 180px;
+            margin-left: 30px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            padding-left: 10px;
+            margin-top: 20px;
+        }
+        #ipt6{
+            height: 30px;
+            width: 80px;
+            margin-left: 20px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            padding-left: 10px;
+            margin-top: 20px;
+        }
+        #ipt7{
+            width: 712px;
+            height:174px;
+            margin-left: 40px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+        #stype{
+            width: 30px;
+            margin-left: 39px;
+            margin-top: 2px;
+        }
+        #btn1{
+            width: 35px;
+            height: 35px;
+            border: 1px solid white;
+            border-radius: 50%;
+            background-color: white;
+            margin-left: 17px;
+
+
+        }
+        .footer{
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+
+        }
+        #btn2{
+            width: 60px;
+            height: 30px;
+            border-radius: 10px;
+            border: 1px #ccc;
+            background-color: gainsboro;
+        }
+        #btn2:hover{
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+<div class="container" >
+    <div class="row">
+        <div class="col-md-4 col-md-pull-3 box1">
+            <div class="title"><span id="addwin"><a href="javascript:void(0)" >+Add plan</a></span></div>
+            <div class="bottom"><span>Settings</span></div></div>
+
+        <div class="col-md-8 box2  "><p>please add a budgeting plan</p></div>
+    </div>
+</div>
+<div id="background" class="light_content"></div>
+<div id="float_background" class="box">
+    <div class="right">
+        <div class="title2">
+            <span>new plan</span>
+        </div>
+        <input id="ipt1" type="text" value="Plan name " />
+        <input id="ipt2" type="text" value="budget " />
+        <input id="ipt3" type="text" value="time optional" />
+        <br />
+        <br />
+        <br />
+        <span id="stype">add costs transactions </span><br />
+        <input id="ipt4" type="text" value="name " />
+        <input id="ipt5" type="text" value="cost " />
+        <input id="ipt6" type="text" value="tag" />
+        <button id="btn1">+</button>
+        <button id="btn1">-</button>
+        <input id="ipt7" type="text" value="" />
+    </div>
+    <div class="footer">
+        <button id="btn2"><a href="javascript:void(0)">close</a></button>
+    </div>
+</div>
+<script type="text/javascript">
+    //
+    //			var oaddwin=document.getElementById("addwin")
+    //			oaddwin.onclick=function openwin(){
+    //				window.open('page.html','_parent - URL','width=500,height=500')
+    //			}
+    var oaddwin=document.getElementById("addwin")//获取打开按钮
+    oaddwin.onclick=function open(){
+        document.getElementById("background").style.display='block'//用display属性来控制div的显示情况
+        document.getElementById("float_background").style.display="block"
+    }
+    var abtn2=document.getElementById("btn2")//获取关闭按钮
+    abtn2.onclick=function close(){
+        document.getElementById("background").style.display=('none')
+        document.getElementById("float_background").style.display=("none")
+    }
+</script>
+</body>
+</html>

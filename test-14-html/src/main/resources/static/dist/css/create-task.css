@@ -1,0 +1,49 @@
+.create-task {
+    width: 50%;
+    height: 50%;
+}
+.create-task-content {
+    width: 100%;
+    height: 80%;
+}
+.create-task-content-form {
+    width: 100%;
+    height: 100%;
+}
+.row {
+    width: 100%;
+    height: 15%;
+    margin-bottom: 1%;
+}
+.row-name {
+    display: inline-block;
+    width: 20%;
+    height: 100%;
+    text-align: right;
+}
+.row-content {
+    width: 78%;
+    height: 100%;
+}
+.create-task-footer {
+    width: 100%;
+    height: 20%;
+}
+#select-database {
+    min-width: 25%;
+    height: 100%;
+}
+
+/*button*/
+#save-btn {
+    float: right;
+    margin-left: 2%;
+}
+#cancel-btn {
+    float: right;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+#preview-btn {
+    float: right;
+}
