@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.test</groupId>
+    <artifactId>test-01-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>../test-02-common</module>
+        <module>../test-03-public</module>
+        <module>../test-04-silder-verify</module>
+        <module>../test-05-dynamic-data-source</module>
+        <module>../test-06-multithreading</module>
+        <module>../test-07-design-pattern</module>
+        <module>../test-08-freemarker</module>
+        <module>../test-09-mybatis</module>
+        <module>../test-09-mybatis-plus</module>
+        <module>../test-10-fastdfs</module>
+        <module>../test-11-rabbitmq-producer</module>
+        <module>../test-12-rabbitmq-consumer-01</module>
+        <module>../test-13-rabbitmq-consumer-02</module>
+        <module>../test-14-html</module>
+        <module>../test-15-elasticsearch</module>
+        <module>../test-16-redis</module>
+        <module>../test-10-ftp</module>
+        <module>../test-17-io</module>
+        <module>../test-18-mongodb</module>
+        <module>../test-16-redis-jedis</module>
+        <module>../test-19-websocket</module>
+    </modules>
+
+    <!-- 手动指定pom -->
+    <packaging>pom</packaging>
+
+    <!-- spring boot采用 2.4.1 版本 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.1</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <junit.version>4.12</junit.version>
+        <!-- spring cloud 采用 Finchley.SR2 版本 -->
+        <spring-cloud.version>Finchley.SR2</spring-cloud.version>
+        <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
+        <mybatis-plus-boot-starter.version>3.3.2</mybatis-plus-boot-starter.version>
+        <druid.version>1.1.18</druid.version>
+        <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+        <oracle-connector-java.version>19.3.0.0</oracle-connector-java.version>
+        <okhttp.version>3.9.1</okhttp.version>
+        <feign-okhttp.version>8.18.0</feign-okhttp.version>
+        <commons-io.version>2.6</commons-io.version>
+        <org.apache.commons.io.version>1.3.2</org.apache.commons.io.version>
+        <commons-fileupload.version>1.3.3</commons-fileupload.version>
+        <commons-codec.version>1.14</commons-codec.version>
+        <commons-lang3.version>3.7</commons-lang3.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <lombok.version>1.18.12</lombok.version>
+        <springfox-swagger.version>2.7.0</springfox-swagger.version>
+        <fastjson.version>1.2.30</fastjson.version>
+        <fastdfs-client-java.version>1.27.0.0</fastdfs-client-java.version>
+        <elasticsearch.version>7.16.1</elasticsearch.version>
+        <guava.version>24.0-jre</guava.version>
+        <httpclient.version>4.5.13</httpclient.version>
+        <slf4j-api.version>1.7.30</slf4j-api.version>
+        <poi.version>4.1.2</poi.version>
+        <poi-tl.version>1.9.1</poi-tl.version>
+        <tomcat-embed-core.version>9.0.41</tomcat-embed-core.version>
+        <dynamic-datasource-spring-boot-starter.version>2.4.2</dynamic-datasource-spring-boot-starter.version>
+        <druid-spring-boot-starter.version>1.1.14</druid-spring-boot-starter.version>
+        <groovy.version>3.0.10</groovy.version>
+        <commons-io.version>1.3.2</commons-io.version>
+        <swagger-ui.version>2.9.2</swagger-ui.version>
+        <commons-net.version>3.6</commons-net.version>
+        <hutool-all.version>5.7.15</hutool-all.version>
+        <spring-security-core.version>5.0.4.RELEASE</spring-security-core.version>
+        <jxl.version>2.6.12</jxl.version>
+        <spring-beans.version>5.3.9</spring-beans.version>
+        <spring-security-crypto.version>4.2.3.RELEASE</spring-security-crypto.version>
+        <spring-security-jwt.version>1.0.8.RELEASE</spring-security-jwt.version>
+        <spring-core.version>5.3.6</spring-core.version>
+        <gson.version>2.8.5</gson.version>
+        <commons-dbcp2.version>2.8.0</commons-dbcp2.version>
+        <!-- <pagehelper-spring-boot-starter.version>1.2.4</pagehelper-spring-boot-starter.version> -->
+        <pagehelper.version>5.2.0</pagehelper.version>
+        <jackson-dataformat-xml.version>2.9.5</jackson-dataformat-xml.version>
+        <redisson-spring-boot-starter.version>3.16.5</redisson-spring-boot-starter.version>
+        <jedis.version>3.6.1</jedis.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
+        <spring-boot-starter-websocket.version>3.0.4</spring-boot-starter-websocket.version>
+    </properties>
+
+    <!--依赖声明-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <!--maven不支持多继承，使用import来依赖管理配置-->
+                <scope>import</scope>
+            </dependency>
+            <!-- database start -->
+            <!-- mysql 驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <!-- oracle 19.3.0.0 驱动 -->
+            <dependency>
+                <groupId>com.oracle.ojdbc</groupId>
+                <artifactId>ojdbc8</artifactId>
+                <version>${oracle-connector-java.version}</version>
+            </dependency>
+            <!-- database end -->
+            <!--导入 mybatis 1.3.2 启动器-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot.version}</version>
+            </dependency>
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <!-- 分页组件 pagehelper 5.2.0 -->
+<!--            <dependency>-->
+<!--                <groupId>com.github.pagehelper</groupId>-->
+<!--                <artifactId>pagehelper-spring-boot-starter</artifactId>-->
+<!--                <version>${pagehelper-spring-boot-starter.version}</version>-->
+<!--            </dependency>-->
+            <!-- 分页组件 pagehelper 5.2.0 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            <!--druid数据源-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- http 连接工具okhttp -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.netflix.feign</groupId>
+                <artifactId>feign-okhttp</artifactId>
+                <version>${feign-okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${org.apache.commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.oschina.zcx7878</groupId>
+                <artifactId>fastdfs-client-java</artifactId>
+                <version>${fastdfs-client-java.version}</version>
+            </dependency>
+            <!-- BasicDataSource -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-dbcp2</artifactId>
+                <version>${commons-dbcp2.version}</version>
+            </dependency>
+            <!-- elasticsearch-rest-high-level-client -->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <!-- jdbc EsDriver -->
+            <dependency>
+                <groupId>org.elasticsearch.plugin</groupId>
+                <artifactId>x-pack-sql-jdbc</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <!-- 日志 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+            <!-- 数据导出成excel所需依赖 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.deepoove</groupId>
+                <artifactId>poi-tl</artifactId>
+                <version>${poi-tl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <!-- HttpServletResponse -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat-embed-core.version}</version>
+            </dependency>
+            <!-- 配置多数据源 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <!-- swagger-ui -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger-ui.version}</version>
+            </dependency>
+            <!-- hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+            <!-- ftp连接工具包 -->
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons-net.version}</version>
+            </dependency>
+            <!-- security -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>${spring-security-crypto.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>${spring-security-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security-core.version}</version>
+            </dependency>
+            <!-- jxl -->
+            <dependency>
+                <groupId>net.sourceforge.jexcelapi</groupId>
+                <artifactId>jxl</artifactId>
+                <version>${jxl.version}</version>
+            </dependency>
+            <!-- spring-beans -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring-beans.version}</version>
+            </dependency>
+            <!-- spring-core -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring-core.version}</version>
+            </dependency>
+            <!-- gson -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <!-- jackson-dataformat-xml 解决rabbitmq发送消息内容为对象会乱码的问题 -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson-dataformat-xml.version}</version>
+            </dependency>
+            <!-- redisson redis分布式锁 -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- jedis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+            <!-- 引入redis连接池的依赖 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+            <!-- WebSocket -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-websocket</artifactId>
+                <version>${spring-boot-starter-websocket.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>qc-offline-report</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
