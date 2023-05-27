@@ -1,0 +1,17 @@
+server:
+  port: 8019
+
+spring:
+  application:
+    name: test-19-websocket
+    datasource:
+      url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+      username: root
+      password: root
+      driverClassName: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.websocket.mapper
+  configuration: #配置此种打印方式会在控制台打印出sql和参数，及sql执行的所有结果集
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

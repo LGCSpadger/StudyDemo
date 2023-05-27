@@ -1,0 +1,21 @@
+server:
+  port: 8016
+
+spring:
+  application:
+    name: test-16-redis-jedis
+  redis:
+    cluster:
+      # 集群节点
+      nodes: 10.11.51.11:7001,10.11.51.11:7002,10.11.51.12:7001,10.11.51.12:7002,10.11.51.13:7001,10.11.51.13:7002
+      # 最大重定向次数
+      max-redirects: 5
+    password: admin
+    lettuce:
+      shutdown-timeout: 0
+      pool:
+        min-idle: 0
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        enabled: true

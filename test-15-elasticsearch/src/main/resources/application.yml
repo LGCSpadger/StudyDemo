@@ -1,0 +1,35 @@
+server:
+  port: 8015
+
+spring:
+  application:
+    name: test-15-elasticsearch
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: c##myoracle
+    password: myoracle
+    driverClassName: oracle.jdbc.OracleDriver
+  elasticsearch:
+    rest:
+      # es 连接地址，多个用逗号隔开
+      uris: 192.168.10.11:9200,192.168.10.12:9200,192.168.10.13:9200
+      username: spadger
+      password: spadger
+      # 连接超时时间，单位毫秒，默认1s
+      connection-timeout: 1000
+      # 读取超时时间，单位毫秒，默认30s
+      read-timeout: 1000
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.elasticsearch.mapper
+  configuration: #配置此种打印方式会在控制台打印出sql和参数，及sql执行的所有结果集
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+#logging:
+#  level:
+#    # 配置日志级别为 debug 级别
+#    com.test.mybatis_plus: debug

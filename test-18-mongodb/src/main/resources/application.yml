@@ -1,0 +1,15 @@
+server:
+  port: 8018
+
+spring:
+  application:
+    name: test-18-mongodb
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017
+      database: xc_cms
+      authentication-database: root
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG

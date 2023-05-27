@@ -1,0 +1,22 @@
+server:
+  port: 8017
+
+spring:
+  application:
+    name: test-17-io
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.mybatis_plus.mapper
+  configuration: #配置此种打印方式会在控制台打印出sql和参数，及sql执行的所有结果集
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+#logging:
+#  level:
+#    com.test.mybatis_plus: debug
