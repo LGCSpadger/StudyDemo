@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pub.mapper.ArticleMapper">
+
+    <resultMap type="com.test.pub.entity.Article" id="ArticleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="occurTime" column="occur_time" jdbcType="VARCHAR"/>
+        <result property="rdl" column="rdl" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="com.test.pub.entity.TtuTz" id="TtuTzMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="cityName" column="city_name" jdbcType="VARCHAR"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
+        <result property="xmxzName" column="xmxz_name" jdbcType="VARCHAR"/>
+        <result property="facName" column="fac_name" jdbcType="VARCHAR"/>
+        <result property="feederName" column="feeder_name" jdbcType="VARCHAR"/>
+        <result property="termName" column="term_name" jdbcType="VARCHAR"/>
+        <result property="psrId" column="psr_id" jdbcType="VARCHAR"/>
+        <result property="termTypeName" column="term_type_name" jdbcType="VARCHAR"/>
+        <result property="termFlag" column="term_flag" jdbcType="VARCHAR"/>
+        <result property="runStatus" column="run_status" jdbcType="VARCHAR"/>
+        <result property="txfsName" column="txfs_name" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap type="com.test.pub.entity.TtuZxl" id="TtuZxlMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="cityName" column="city_name" jdbcType="VARCHAR"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
+        <result property="facName" column="fac_name" jdbcType="VARCHAR"/>
+        <result property="feederName" column="feeder_name" jdbcType="VARCHAR"/>
+        <result property="daModel" column="da_model" jdbcType="VARCHAR"/>
+        <result property="termName" column="term_name" jdbcType="VARCHAR"/>
+        <result property="psrId" column="psr_id" jdbcType="VARCHAR"/>
+        <result property="termIp" column="term_ip" jdbcType="VARCHAR"/>
+        <result property="termSscj" column="term_sscj" jdbcType="VARCHAR"/>
+        <result property="runStatus" column="run_status" jdbcType="VARCHAR"/>
+        <result property="txfsName" column="txfs_name" jdbcType="VARCHAR"/>
+        <result property="termTypeName" column="term_type_name" jdbcType="VARCHAR"/>
+        <result property="termFlag" column="term_flag" jdbcType="VARCHAR"/>
+        <result property="onTime" column="on_time" jdbcType="VARCHAR"/>
+        <result property="offTime" column="off_time" jdbcType="VARCHAR"/>
+        <result property="zdzxl" column="zdzxl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ArticleMap">
+        select id,
+               title,
+               content,
+               occur_time,
+               rdl
+        from test.article
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ArticleMap">
+        select id,
+               title,
+               content,
+               occur_time,
+               rdl
+        from test.article limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ArticleMap">
+        select
+        id, title, content, occur_time, rdl
+        from test.article
+        where id &lt;= 300000
+<!--        <where>-->
+<!--            <if test="id != null">-->
+<!--                and id = #{id}-->
+<!--            </if>-->
+<!--            <if test="title != null and title != ''">-->
+<!--                and title = #{title}-->
+<!--            </if>-->
+<!--            <if test="content != null and content != ''">-->
+<!--                and content = #{content}-->
+<!--            </if>-->
+<!--            <if test="occurTime != null and occurTime != ''">-->
+<!--                and occur_time = #{occurTime}-->
+<!--            </if>-->
+<!--            <if test="rdl != null">-->
+<!--                and rdl = #{rdl}-->
+<!--            </if>-->
+<!--        </where>-->
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into test.article(title, content, occur_time, rdl)
+        values (#{title}, #{content}, #{occurTime}, #{rdl})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into test.article(title, content, occur_time, rdl)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.title}, #{entity.content}, #{entity.occurTime}, #{entity.rdl})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into test.article(title, content, occur_time, rdl)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.title}, #{entity.content}, #{entity.occurTime}, #{entity.rdl})
+        </foreach>
+        on duplicate key update
+        title = values(title) , content = values(content) , occur_time = values(occur_time) , rdl = values(rdl)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.article
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="occurTime != null and occurTime != ''">
+                occur_time = #{occurTime},
+            </if>
+            <if test="rdl != null">
+                rdl = #{rdl},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from test.article
+        where id = #{id}
+    </delete>
+
+    <select id="selectAllTtuTz" resultMap="TtuTzMap">
+        select * from ttu_tz
+    </select>
+
+    <select id="selectAllTtuZxl" resultMap="TtuZxlMap">
+        select * from ttu_zxl
+    </select>
+
+    <!-- sql中表名动态注入，statementType取值STATEMENT：非预编译；PREPARED：预编译；CallableStatement：未知；默认取值是PREPARED -->
+    <!-- 要实现动态调用表名和字段名，就不能使用预编译了，需添加statementType=“STATEMENT”"  -->
+    <select id="test" parameterType="java.lang.String" resultType="com.test.pub.entity.Article" statementType="STATEMENT">
+        select * from ${tableName} where id &lt; 38
+    </select>
+
+    <select id="test01" resultType="java.util.Map">
+        select
+            id as 'CIRCUIT_ID',title as 'CIRCUIT_NO',content as 'SERIAL_NO',occur_time as 'BUSINESS_IDENTITY',rdl as 'ROUTE_NAME'
+        from article where id &lt; 38
+    </select>
+
+    <select id="testProceduce" resultType="java.util.Map">
+        call test_01_procedure(#{txfsName});
+    </select>
+
+    <select id="selectAllAct" resultType="java.util.Map">
+        select * from article where id &lt; 0
+    </select>
+
+    <select id="selectArticlePage" resultMap="ArticleMap">
+        select * from article where id &lt; 20
+    </select>
+
+    <select id="selectArticlePageOther" resultType="java.util.Map">
+        select * from article where id &lt; 20
+    </select>
+
+    <select id="findAllArticleByPageF" resultMap="ArticleMap">
+        select * from article where id &lt; 50
+    </select>
+
+    <select id="findAllArticleByPageFOther" resultMap="ArticleMap">
+        select * from article where id &lt; 60
+    </select>
+
+    <select id="testSql" parameterType="java.util.HashMap" resultMap="ArticleMap">
+        select * from article where id = #{ids}
+    </select>
+</mapper>

@@ -1,0 +1,65 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: test-03-public
+  datasource:
+    dynamic:
+      primary: test
+      datasource:
+        test:
+          url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+          username: root
+          password: root
+          driverClassName: com.mysql.cj.jdbc.Driver
+        springcloud_db01:
+          url: jdbc:mysql://localhost:3306/springcloud_db01?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+          username: root
+          password: root
+          driverClassName: com.mysql.cj.jdbc.Driver
+  # redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: admin
+    database: 0
+    connect-timeout: 300000 #连接超时时间5分钟
+    lettuce:
+      pool:
+        max-active: 8   #连接池最大连接数
+        max-idle: 8   #最大空闲连接
+        min-idle: 0   #最小空闲数连接
+        max-wait: 1000  #最大等待时间1000ms
+
+  #springboot2.3需要这样配置freemarker
+  freemarker:
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+    cache: false
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.pub.mapper
+#  configuration: #配置此种打印方式会在控制台打印出sql和参数，及sql执行的所有结果集
+#      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      #开启MyBatis的二级缓存
+#      cache-enabled: true
+
+#分页pageHelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+logging:
+  level:
+    com.test.pub: debug
+
+TEST_KEY: abcdw

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pub.mapper.DistributedTransactionTestMapper">
+
+  <insert id="saveArticle" parameterType="com.test.pub.entity.Article">
+      insert into article(title, content, occur_time, rdl)
+      values (#{title}, #{content}, #{occurTime}, #{rdl})
+  </insert>
+
+</mapper>

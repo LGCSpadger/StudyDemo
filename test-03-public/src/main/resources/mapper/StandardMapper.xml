@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pub.mapper.StandardMapper">
+
+  <!-- 一对多可这样写 -->
+  <resultMap type="com.test.pub.entity.Author" id="authorMap">
+    <result property="id" column="id" jdbcType="INTEGER"/>
+    <result property="authorName" column="author_name" jdbcType="VARCHAR"/>
+    <result property="age" column="age" jdbcType="INTEGER"/>
+    <result property="birthday" column="birthday" jdbcType="BIGINT"/>
+    <result property="magnumOpus" column="magnum_opus" jdbcType="VARCHAR"/>
+    <collection property="articleList" javaType="java.util.List" resultMap="articleMap"></collection>
+  </resultMap>
+
+  <!-- 一对多也可这样写 -->
+<!--  <resultMap type="com.test.pub.entity.Author" id="authorMap">-->
+<!--    <result property="id" column="id" jdbcType="INTEGER"/>-->
+<!--    <result property="authorName" column="author_name" jdbcType="VARCHAR"/>-->
+<!--    <result property="age" column="age" jdbcType="INTEGER"/>-->
+<!--    <result property="birthday" column="birthday" jdbcType="BIGINT"/>-->
+<!--    <result property="magnumOpus" column="magnum_opus" jdbcType="VARCHAR"/>-->
+<!--    <collection property="articleList" javaType="java.util.List" ofType="com.test.pub.entity.Article">-->
+<!--      <result property="name" column="name" jdbcType="VARCHAR"/>-->
+<!--      <result property="artDesc" column="art_desc" jdbcType="VARCHAR"/>-->
+<!--      <result property="content" column="content" jdbcType="VARCHAR"/>-->
+<!--    </collection>-->
+<!--  </resultMap>-->
+
+  <resultMap type="com.test.pub.entity.Article" id="articleMap">
+    <result property="id" column="id" jdbcType="BIGINT"/>
+    <result property="name" column="name" jdbcType="VARCHAR"/>
+    <result property="artDesc" column="art_desc" jdbcType="VARCHAR"/>
+    <result property="author" column="author" jdbcType="VARCHAR"/>
+    <result property="createTime" column="create_time" jdbcType="BIGINT"/>
+    <result property="content" column="content" jdbcType="VARCHAR"/>
+    <result property="type" column="type" jdbcType="INTEGER"/>
+    <result property="exField01" column="ex_field_01" jdbcType="VARCHAR"/>
+    <result property="exField02" column="ex_field_02" jdbcType="VARCHAR"/>
+    <result property="exField03" column="ex_field_03" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <!-- 一对一查询 查询作者列表 -->
+  <select id="queryAuthorList" parameterType="com.test.pub.entity.Author" resultMap="authorMap">
+    select id,author_name,age,birthday,magnum_opus from author
+    <where>
+      1 = 1
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="authorName != null and authorName != ''">
+        <bind name="authorNameLike" value="'%' + authorName + '%'" />
+        and author_name like #{authorNameLike}
+      </if>
+    </where>
+  </select>
+
+  <!-- 一对多查询 查询作者及作者写的小说列表 -->
+  <select id="queryAuthorAndArticleList" parameterType="com.test.pub.entity.Author" resultMap="authorMap">
+    select
+    a.id,a.author_name,a.age,a.birthday,a.magnum_opus,b.name,b.art_desc,b.content
+    from author a
+    left join article b on a.author_name = b.author
+    <where>
+      1 = 1
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="authorName != null and authorName != ''">
+        <bind name="authorNameLike" value="'%' + authorName + '%'" />
+        and author_name like #{authorNameLike}
+      </if>
+    </where>
+  </select>
+
+  <!-- 创建 作者表 -->
+  <update id="createTableAuthor">
+    create table author (
+        id int primary key not null auto_increment comment 'id',
+        name varchar(64) not null comment '作者姓名',
+        age int comment '作者年龄',
+        birthday bigint not null comment '作者出生时间',
+        magnum_opus varchar(200) not null comment '代表作'
+    ) comment '小说作者信息管理表'
+  </update>
+
+  <!-- 创建 文章表 -->
+  <update id="createTableArticle">
+    create table article (
+        id bigint primary key not null auto_increment comment 'id',
+        name varchar(64) not null comment '文章名称',
+        art_desc varchar(100) comment '文章描述',
+        author varchar(100) not null comment '作者',
+        create_time bigint not null comment '创作时间',
+        content varchar(600) not null comment '文章内容',
+        type int comment '文章类型（1：天文学；2：地理学；3：物理学；4：生物学；5：it技术；6：网络安全；7：美食；8：化学；9：建筑学；10：大自然）',
+        ex_field_01 varchar(100) comment '扩展字段01',
+        ex_field_02 varchar(100) comment '扩展字段02',
+        ex_field_03 varchar(100) comment '扩展字段03'
+    ) comment '文章信息管理表'
+  </update>
+
+  <!-- 文章表新增单条记录 -->
+  <insert id="saveArticle" parameterType="com.test.pub.entity.Article">
+    insert into article(name,author,create_time,content,
+    <trim suffixOverrides=",">
+      <if test="artDesc != null and artDesc != ''">
+        art_desc,
+      </if>
+      <if test="type != null and type != 0">
+        type,
+      </if>
+      <if test="exField01 != null and exField01 != ''">
+        ex_field_01,
+      </if>
+      <if test="exField02 != null and exField02 != ''">
+        ex_field_02,
+      </if>
+      <if test="exField03 != null and exField03 != ''">
+        ex_field_03,
+      </if>
+    </trim>
+    )
+    values(#{name},#{author},#{createTime},#{content},
+    <trim suffixOverrides=",">
+      <if test="artDesc != null and artDesc != ''">
+        #{artDesc},
+      </if>
+      <if test="type != null and type != 0">
+        #{type},
+      </if>
+      <if test="exField01 != null and exField01 != ''">
+        #{exField01},
+      </if>
+      <if test="exField02 != null and exField02 != ''">
+        #{exField02},
+      </if>
+      <if test="exField03 != null and exField03 != ''">
+        #{exField03},
+      </if>
+    </trim>
+    )
+  </insert>
+
+  <!-- 批量插入数据 -->
+  <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+    insert into article(name,art_desc,author,create_time,content,type,ex_field_01,ex_field_02,ex_field_03)
+    values
+    <foreach collection="datas" item="data" separator=",">
+      (#{data.name},#{data.artDesc},#{data.author},#{data.createTime},#{data.content},#{data.type},
+      #{data.exField01},#{data.exField02},#{data.exField03})
+    </foreach>
+  </insert>
+
+  <insert id="insertBatchForOracle" parameterType="java.util.List">
+    insert all
+    <foreach collection="datas" item="data" index="index">
+      into article(name,art_desc,author,create_time,content,type,ex_field_01,ex_field_02,ex_field_03)
+      values(#{data.name},#{data.artDesc},#{data.author},#{data.createTime},#{data.content},#{data.type},
+      #{data.exField01},#{data.exField02},#{data.exField03})
+    </foreach>
+    select 1 from dual
+  </insert>
+
+  <!-- 删除文章记录 -->
+  <delete id="deleteArticle" parameterType="com.test.pub.entity.Article">
+    delete from article
+    <where>
+      1 = 1
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        and name = #{name}
+      </if>
+      <if test="author != null and author != 0">
+        and author = #{author}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+    </where>
+  </delete>
+
+  <!-- 修改文章记录 -->
+  <update id="updateArticle" parameterType="com.test.pub.entity.Article">
+    update article
+    <trim suffixOverrides=",">
+      <if test="name != null and name != ''">
+        name = #{name},
+      </if>
+      <if test="artDesc != null and artDesc != ''">
+        art_desc = #{artDesc},
+      </if>
+      <if test="author != null and author != 0">
+        author = #{author},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="content != null and content != ''">
+        content = #{content},
+      </if>
+      <if test="type != null and type != 0">
+        type = #{type},
+      </if>
+      <if test="exField01 != null and exField01 != ''">
+        ex_field_01 = #{exField01},
+      </if>
+      <if test="exField02 != null and exField02 != ''">
+        ex_field_02 = #{exField02},
+      </if>
+      <if test="exField03 != null and exField03 != ''">
+        ex_field_03 = #{exField03},
+      </if>
+    </trim>
+    <where>
+      1 = 1
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        and name = #{name}
+      </if>
+      <if test="author != null and author != 0">
+        and author = #{author}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+    </where>
+  </update>
+
+  <!--查询指定行数据-->
+  <select id="queryDataList" parameterType="com.test.pub.entity.Article" resultType="com.test.pub.entity.Article">
+      select id,
+             name,
+             content,
+             create_time,
+             author
+      from article where id &lt; 100
+  </select>
+</mapper>

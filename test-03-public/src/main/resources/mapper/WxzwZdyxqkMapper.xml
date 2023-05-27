@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pub.mapper.WxzwZdyxqkMapper">
+
+    <resultMap type="com.test.pub.entity.WxzwZdyxqk" id="WxzwZdyxqkMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
+        <result property="termNum" column="term_num" jdbcType="INTEGER"/>
+        <result property="offlineTime" column="offline_time" jdbcType="OTHER"/>
+        <result property="onlineTime" column="online_time" jdbcType="OTHER"/>
+        <result property="jlrq" column="jlrq" jdbcType="VARCHAR"/>
+        <result property="wxzwZdzxl" column="wxzw_zdzxl" jdbcType="VARCHAR"/>
+        <result property="yxZdzxl" column="yx_zdzxl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="WxzwZdyxqkMap">
+        select id,
+               area_name,
+               term_num,
+               offline_time,
+               online_time,
+               jlrq,
+               wxzw_zdzxl,
+               yx_zdzxl
+        from test.wxzw_zdyxqk
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="WxzwZdyxqkMap">
+        select id,
+               area_name,
+               term_num,
+               offline_time,
+               online_time,
+               jlrq,
+               wxzw_zdzxl,
+               yx_zdzxl
+        from test.wxzw_zdyxqk limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="WxzwZdyxqkMap">
+        select
+        id, area_name, term_num, offline_time, online_time, jlrq, wxzw_zdzxl, yx_zdzxl
+        from test.wxzw_zdyxqk
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="areaName != null and areaName != ''">
+                and area_name = #{areaName}
+            </if>
+            <if test="termNum != null">
+                and term_num = #{termNum}
+            </if>
+            <if test="offlineTime != null">
+                and offline_time = #{offlineTime}
+            </if>
+            <if test="onlineTime != null">
+                and online_time = #{onlineTime}
+            </if>
+            <if test="jlrq != null and jlrq != ''">
+                and jlrq = #{jlrq}
+            </if>
+            <if test="wxzwZdzxl != null and wxzwZdzxl != ''">
+                and wxzw_zdzxl = #{wxzwZdzxl}
+            </if>
+            <if test="yxZdzxl != null and yxZdzxl != ''">
+                and yx_zdzxl = #{yxZdzxl}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into test.wxzw_zdyxqk(area_name, term_num, offline_time, online_time, jlrq, wxzw_zdzxl, yx_zdzxl)
+        values (#{areaName}, #{termNum}, #{offlineTime}, #{onlineTime}, #{jlrq}, #{wxzwZdzxl}, #{yxZdzxl})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into test.wxzw_zdyxqk(area_name, term_num, offline_time, online_time, jlrq, wxzw_zdzxl, yx_zdzxl)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.areaName}, #{entity.termNum}, #{entity.offlineTime}, #{entity.onlineTime}, #{entity.jlrq},
+            #{entity.wxzwZdzxl}, #{entity.yxZdzxl})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into test.wxzw_zdyxqk(area_name, term_num, offline_time, online_time, jlrq, wxzw_zdzxl, yx_zdzxl)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.areaName}, #{entity.termNum}, #{entity.offlineTime}, #{entity.onlineTime}, #{entity.jlrq},
+            #{entity.wxzwZdzxl}, #{entity.yxZdzxl})
+        </foreach>
+        on duplicate key update
+        area_name = values(area_name) , term_num = values(term_num) , offline_time = values(offline_time) , online_time
+        = values(online_time) , jlrq = values(jlrq) , wxzw_zdzxl = values(wxzw_zdzxl) , yx_zdzxl = values(yx_zdzxl)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.wxzw_zdyxqk
+        <set>
+            <if test="areaName != null and areaName != ''">
+                area_name = #{areaName},
+            </if>
+            <if test="termNum != null">
+                term_num = #{termNum},
+            </if>
+            <if test="offlineTime != null">
+                offline_time = #{offlineTime},
+            </if>
+            <if test="onlineTime != null">
+                online_time = #{onlineTime},
+            </if>
+            <if test="jlrq != null and jlrq != ''">
+                jlrq = #{jlrq},
+            </if>
+            <if test="wxzwZdzxl != null and wxzwZdzxl != ''">
+                wxzw_zdzxl = #{wxzwZdzxl},
+            </if>
+            <if test="yxZdzxl != null and yxZdzxl != ''">
+                yx_zdzxl = #{yxZdzxl},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from test.wxzw_zdyxqk
+        where id = #{id}
+    </delete>
+
+</mapper>

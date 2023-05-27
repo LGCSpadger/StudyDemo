@@ -1,0 +1,120 @@
+@charset "UTF-8";
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-lg {
+    font-size: 1.33333333em;
+    line-height: .75em;
+    vertical-align: -15%;
+}
+
+.fa-2x {
+    font-size: 2em;
+}
+
+.fa-3x {
+    font-size: 3em;
+}
+
+.fa-4x {
+    font-size: 4em;
+}
+
+.fa-5x {
+    font-size: 5em;
+}
+
+.fa-fw {
+    width: 1.28571429em;
+    text-align: center;
+}
+
+
+.checkbox,
+.radio {
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.checkbox:hover,
+.radio:hover {
+    cursor: pointer;
+}
+
+.checkbox .fa,
+.radio .fa {
+    width: 1em;
+}
+
+.indent {
+    padding-left: 30px;
+}
+
+.indent .fa {
+    margin-left: -30px;
+}
+
+.checkbox input[type="checkbox"],
+.radio input[type="radio"] {
+
+    visibility:hidden;
+}
+
+.checkbox input[type="checkbox"] + i:before,
+.radio input[type="radio"] + i:before {
+    content: "\f096";
+    position: relative;
+    bottom: -4px;
+    margin-right: 5px;
+    color: #999;
+}
+
+.checkbox:hover input[type="checkbox"] + i:before,
+.radio:hover input[type="radio"] + i:before {
+    color: green;
+}
+
+.checkbox input[type="checkbox"]:checked + i:before,
+.radio input[type="radio"]:checked + i:before {
+    content: "\f046";
+    color: green;
+}
+
+.checkbox input[type="checkbox"]:disabled + i:before,
+.checkbox input[type="checkbox"]:disabled:checked + i:before,
+.radio input[type="radio"]:disabled + i:before,
+.radio input[type="radio"]:disabled:checked + i:before {
+    color: #ddd;
+}
+
+/*RADIO*/
+.radio input[type="radio"] + i:before {
+    content: "\f1db";
+}
+
+.radio input[type="radio"]:checked + i:before {
+    content: "\f058";
+}
+
+/* CHECKBOX&RADIO XS*/
+.checkbox-xs input[type="checkbox"] + i:before,
+.radio-xs input[type="radio"] + i:before {
+    bottom: 0;
+}
+
+.checkbox-xs.indent,
+.radio-xs.indent {
+    padding-left: 20px;
+}
+
+.checkbox-xs.indent .fa,
+.radio-xs.indent .fa {
+    margin-left: -20px;
+}
