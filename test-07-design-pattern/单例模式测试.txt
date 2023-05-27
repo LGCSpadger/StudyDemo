@@ -1,0 +1,145 @@
+public class Singleton {饿汉式
+    private static final Singleton singleton = new Singleton();静态常量
+    private Singleton() {}
+    public static Singleton getInstance() {
+        return singleton;
+    }
+}
+线程安全 类装载的时候就进行了初始化，没有达到lazy loading的效果，可能会浪费内存
+
+public class Singleton {饿汉式
+    private static Singleton singleton;
+    static {
+        singleton = new Singleton();静态代码块
+    }
+    private Singleton() {}
+    public static Singleton getInstance() {
+        return singleton;
+    }
+}
+
+public class Singleton {饿汉式
+    private static Singleton singleton;
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            singleton = new Singleton();
+        }
+        return singleton;
+    }
+}
+达到了lazy loading的效果，但是不是线程安全的
+
+public class Singleton {饿汉式
+    private static Singleton singleton;
+    private Singleton() {}
+    public static synchronized Singleton getInstance() {使用synchronized达到线程同步
+        if (singleton == null) {
+            singleton = new Singleton();
+        }
+        return singleton;
+    }
+}
+达到lazy loading的效果，也是线程同步的，但是效率太低
+
+public class Singleton {懒汉式
+    private static Singleton singleton;
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized(Singleton.class) {同步代码块
+                singleton = new Singleton();
+            }
+        }
+        return singleton;
+    }
+}
+达到了lazy loading的效果，效率不低，但是同样是线程不安全的
+
+public class Singleton {懒汉式
+    private static Singleton singleton;
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (singleton == null) {双重检查机制
+            synchronized(Singleton.class) {同步代码块控制线程安全
+                if (singleton == null) {
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+达到lazy loading的效果，线程安全，效率高，但是由于jvm底层机制，偶尔会报错，所以不推荐
+
+public class Singleton {懒汉式
+    private Singleton() {}
+    public static class SingletonStatic {静态内部类
+        private static final Singleton singleton = new Singleton();类的静态属性只会在类第一次加载的时候初始化，而类在初始化的时候，其他线程是无法进入的，也就是一定是单例的
+    }
+    public static Singleton getInstance() {
+        return SingletonStatic.singleton;
+    }
+}
+达到lazy loading的效果，线程安全，效率高，推荐，但不是最完美的方案
+
+public class Singleton {
+    private Singleton() {}
+    private static class SingletonStatic {
+        private static final Singleton singleton = new Singleton();
+    }
+    public static Singleton getInstance() {
+        return SingletonStatic.singleton;
+    }
+}
+
+public enum Singleton {
+    instance;枚举元素本身就是单例
+    public void doSomething() {
+        System.out.println("随便做点啥");
+    }
+}
+使用简单，线程安全，可以避免多线程同步问题，还能防止反序列化重新创建新的对象，调用更简单，直接 Singleton.instance 即可
+
+
+public class Singleton {
+    private static Singleton singleton;
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (singleton == null) {
+            synchronized(Singleton.class) {
+                if (singleton == null) {
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+    }
+}
+
+public class Singleton {
+    private Singleton() {}
+    private static class SingletonStatic {
+        private static final Singleton singelton = new Singleton();
+    }
+    public static Singleton getInstance() {
+        return SingletonStatic.singleton;
+    }
+}
+
+public class Singleton {
+    private Singleton() {}
+    private static class SingletonStatic {
+        private static final Singleton singleton = new Singleton();
+    }
+    public static Singleton getInstance() {
+        return SingletonStatic.singleton;
+    }
+}
+
+public enum Singleton {
+    instance;
+    public void doSomething() {
+        System.out.println("随便做点啥")
+    }
+}

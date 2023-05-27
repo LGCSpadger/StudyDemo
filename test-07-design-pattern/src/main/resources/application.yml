@@ -1,0 +1,31 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: test-07-design-pattern
+  datasource:
+    dynamic:
+      primary: test
+      datasource:
+        test:
+          url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+          username: root
+          password: root
+          driverClassName: com.mysql.cj.jdbc.Driver
+        springcloud_db01:
+          url: jdbc:mysql://localhost:3306/springcloud_db01?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+          username: root
+          password: root
+          driverClassName: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.design.pattern.mapper
+#  configuration: #配置此种打印方式会在控制台打印出sql和参数，及sql执行的所有结果集
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+logging:
+  level:
+    com.test.pub: debug

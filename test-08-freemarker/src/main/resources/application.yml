@@ -1,0 +1,52 @@
+server:
+  port: 8008
+
+spring:
+  application:
+    name: test-08-freemarker
+  datasource:
+    dynamic:
+      primary: test
+      datasource:
+        test:
+          url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+          username: root
+          password: root
+          driverClassName: com.mysql.cj.jdbc.Driver
+        springcloud_db01:
+          url: jdbc:mysql://localhost:3306/springcloud_db01?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+          username: root
+          password: root
+          driverClassName: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+#    password: root
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 500
+        min-idle: 0
+    lettuce:
+      shutdown-timeout: 0
+  freemarker:
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+    cache: false
+  mvc:
+    static-path-pattern: /static/**
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.pub.mapper
+  configuration: #配置此种打印方式会在控制台打印出sql和参数，及sql执行的所有结果集
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+#logging:
+#  level:
+#    com.test.pub: debug
+
+TEST_KEY: abcdw

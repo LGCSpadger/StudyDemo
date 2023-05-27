@@ -1,0 +1,66 @@
+public interface Sender {
+    public void send();
+}
+
+public class MainSender implements Sender {
+    @Override
+    public void send() {
+        System.out.println("邮件发送。。。。");
+    }
+}
+
+public class SmsSender implements Sender {
+    @Override
+    public void send() {
+        System.out.println("短信发送。。。。");
+    }
+}
+
+public class SenderFactory {
+    public Sender produce(String type) {
+        if ("mail".equals(type)) {
+            return new MainSender();
+        } else if ("sms".equals(type)) {
+            return new SmsSender();
+        } else {
+            System.out.println("没有该类型");
+            return null;
+        }
+    }
+}
+
+public class SenderFactory {
+    public Sender produceMail() {
+        return new MailSender();
+    }
+    public Sender produceSms() {
+        return new SmsSender();
+    }
+}
+
+pulic class SenderFactory {
+    public static Sender produceMail() {
+        return new MailSender();
+    }
+    public static Sender produceSms() {
+        return new SmsSender();
+    }
+}
+
+public interface SenderFactory {
+    public Sender produce();
+}
+
+public class MailSenderFactory implements SenderFactory {
+    @Override
+    public Sender produce() {
+        return new MailSender();
+    }
+}
+
+public class SmsSenderFactory implements SenderFactory {
+    @Override
+    public Sender produce() {
+        return new SmsSender();
+    }
+}
