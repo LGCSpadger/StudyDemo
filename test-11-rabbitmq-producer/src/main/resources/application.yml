@@ -1,0 +1,39 @@
+server:
+  port: 8011
+
+spring:
+  application:
+    name: test-11-rabbitmq-producer
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username: c##myoracle
+    password: myoracle
+    driverClassName: oracle.jdbc.OracleDriver
+#  rabbitmq:
+#    host: 127.0.0.1
+#    port: 5672
+#    username: guest
+#    password: guest
+#    virtual-host: /
+#    # 取消工作队列模式的预取机制（多个消费者轮询获取消息）
+#    listener:
+#      simple:
+#        prefetch: 1 # 每次只能获取一条，处理完成才能获取下一条
+#    publisher-confirm-type: correlated    # 确认消息已发送到交换机（Exchange）
+#    publisher-returns: true   # 确认消息已发送到队列（Queue）
+  rabbitmq:
+#    addresses: 10.21.36.11:5672,10.21.36.12:5672,10.21.36.13:5672
+    addresses: 10.21.36.126:5672 # 如果使用 Haproxy + keepalived 实现了 RabbitMQ 的负载均衡和高可用，那这里就只需要使用 keepalived 的虚拟IP进行连接即可
+    username: spadger
+    password: spadger
+    virtual-host: /
+
+mybatis:
+  config-location: classpath:jpaConfig-oracle.xml
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.test.rabbitmq_producer.mapper
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+logging:
+  level:
+    com.test.rabbitmq_producer: debug

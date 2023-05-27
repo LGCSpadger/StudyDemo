@@ -1,0 +1,16 @@
+server:
+  port: 8013
+
+spring:
+  application:
+    name: test-13-rabbitmq-consumer-02
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    # 取消工作队列模式的预取机制（多个消费者轮询获取消息）
+    listener:
+      simple:
+        prefetch: 1 # 每次只能获取一条，处理完成才能获取下一条
