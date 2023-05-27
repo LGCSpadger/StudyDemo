@@ -1,0 +1,21 @@
+server:
+  port: 8010
+
+spring:
+  application:
+    name: test-10-fastdfs
+
+# fastdfs 配置，连接超时时间、读取超时时间、生成缩略图参数、tracker地址
+fdfs:
+  connect-timeout: 120
+  so-timeout: 2000
+  thumb-image:
+    height: 150
+    width: 150
+  tracker-list: 192.168.10.11:22122,192.168.10.12:22122,192.168.10.13:22122
+#  tracker-list: 47.103.16.47:22122
+
+#配置此种打印方式只会在控制台打印出sql及参数，不会打印出sql执行的所有结果集
+logging:
+  level:
+    com.test.fastdfs: debug

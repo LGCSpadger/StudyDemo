@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.mapper.ArticleMapper">
+
+    <resultMap type="com.test.mybatis.entity.Article" id="ArticleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="artDesc" column="art_desc" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="exField01" column="ex_field_01" jdbcType="VARCHAR"/>
+        <result property="exField02" column="ex_field_02" jdbcType="VARCHAR"/>
+        <result property="exField03" column="ex_field_03" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ArticleMap">
+        select
+          id, name, art_desc, author, create_time, content, type, ex_field_01, ex_field_02, ex_field_03
+        from article
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ArticleMap">
+        select
+          id, name, art_desc, author, create_time, content, type, ex_field_01, ex_field_02, ex_field_03
+        from article
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="artDesc != null and artDesc != ''">
+                and art_desc = #{artDesc}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="exField01 != null and exField01 != ''">
+                and ex_field_01 = #{exField01}
+            </if>
+            <if test="exField02 != null and exField02 != ''">
+                and ex_field_02 = #{exField02}
+            </if>
+            <if test="exField03 != null and exField03 != ''">
+                and ex_field_03 = #{exField03}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from article
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="artDesc != null and artDesc != ''">
+                and art_desc = #{artDesc}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="exField01 != null and exField01 != ''">
+                and ex_field_01 = #{exField01}
+            </if>
+            <if test="exField02 != null and exField02 != ''">
+                and ex_field_02 = #{exField02}
+            </if>
+            <if test="exField03 != null and exField03 != ''">
+                and ex_field_03 = #{exField03}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into article(name, art_desc, author, create_time, content, type, ex_field_01, ex_field_02, ex_field_03)
+        values (#{name}, #{artDesc}, #{author}, #{createTime}, #{content}, #{type}, #{exField01}, #{exField02}, #{exField03})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into article(name, art_desc, author, create_time, content, type, ex_field_01, ex_field_02, ex_field_03)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.name}, #{entity.artDesc}, #{entity.author}, #{entity.createTime}, #{entity.content}, #{entity.type}, #{entity.exField01}, #{entity.exField02}, #{entity.exField03})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into article(name, art_desc, author, create_time, content, type, ex_field_01, ex_field_02, ex_field_03)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.artDesc}, #{entity.author}, #{entity.createTime}, #{entity.content}, #{entity.type}, #{entity.exField01}, #{entity.exField02}, #{entity.exField03})
+        </foreach>
+        on duplicate key update
+        name = values(name),
+        art_desc = values(art_desc),
+        author = values(author),
+        create_time = values(create_time),
+        content = values(content),
+        type = values(type),
+        ex_field_01 = values(ex_field_01),
+        ex_field_02 = values(ex_field_02),
+        ex_field_03 = values(ex_field_03)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update article
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="artDesc != null and artDesc != ''">
+                art_desc = #{artDesc},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="exField01 != null and exField01 != ''">
+                ex_field_01 = #{exField01},
+            </if>
+            <if test="exField02 != null and exField02 != ''">
+                ex_field_02 = #{exField02},
+            </if>
+            <if test="exField03 != null and exField03 != ''">
+                ex_field_03 = #{exField03},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from article where id = #{id}
+    </delete>
+
+</mapper>
+
