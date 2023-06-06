@@ -126,6 +126,9 @@ public class TemporaryTest {
 
   }
 
+  /**
+   * DecimalFormat 小数位数保留测试
+   */
   @Test
   public void test06() {
     DecimalFormat df = new DecimalFormat("0.00");
