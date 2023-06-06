@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest
 public class TimeFormatTest {
 
-  //时间加减
+  //时间加减--月份加减
   @Test
   public void test01() throws ParseException {
     List<String> list = new ArrayList<>();
@@ -46,9 +46,29 @@ public class TimeFormatTest {
     System.out.println(list);
   }
 
+  //时间加减--日期加减
+  @Test
+  public void test02() throws ParseException {
+    List<String> list = new ArrayList<>();
+    String ym = "20230529";
+    String format = "yyyyMMdd";
+    SimpleDateFormat sdf = new SimpleDateFormat(format);
+    Date parse = sdf.parse(ym);
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(parse);
+    int beNum = 12;
+    for (int i = 1; i < 12; i++) {
+      calendar.add(Calendar.DATE, -1);
+      String result = sdf.format(calendar.getTime());
+      list.add(result);
+    }
+    Collections.sort(list);
+    System.out.println(list);
+  }
+
   //
   @Test
-  public void test02() {
+  public void testT() {
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(2);

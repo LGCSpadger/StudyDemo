@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.test.common.utils.TimeFormatUtil;
 import com.test.pub.entity.Article;
 
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -59,12 +61,20 @@ public class TemporaryTest {
     System.out.println(cls.getPackage().getName());
   }
 
+  /**
+   * DecimalFormat 格式化数字测试
+   * 1、new DecimalFormat("#.00") 等效于 new DecimalFormat("0.00")
+   * 2、DecimalFormat 保留有效数字前会先进行四舍五入
+   */
   @Test
   public void test04() {
-    HashMap map = new HashMap<>();
-    map.put(1234,"java");
-    System.out.println(map.get("1234"));//输出：null
-    System.out.println(map.get(1234));//输出：java
+    DecimalFormat df = new DecimalFormat("0.00");
+    Double m = 5 * 100 / 9d;
+    System.out.println(m);
+    String format = df.format(m);
+    System.out.println(format);
+    double re = Double.parseDouble(format);
+    System.out.println(re);
   }
 
   @Test
@@ -114,6 +124,19 @@ public class TemporaryTest {
       System.out.println(p);
     });
 
+  }
+
+  @Test
+  public void test06() {
+    DecimalFormat df = new DecimalFormat("0.00");
+    int i = 4 * 100 / 939;
+    Double t = 4 * 100 / 939d;
+    Float d = Float.parseFloat(4 * 100 / 939 + "");
+    Float f = Float.parseFloat(4 * 100 / 939d + "");
+    String format01 = df.format(d);
+    String format02 = df.format(f);
+    System.out.println(format01);
+    System.out.println(format02);
   }
 
 

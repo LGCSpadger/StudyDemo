@@ -60,7 +60,8 @@ public class Jdk8Test {
 
     // sorted排序
     // 按学生成绩逆序排序 正序则不需要加.reversed()
-    filterList = list.stream().filter(p -> null != p.getScore()).sorted(Comparator.comparing(UserPo::getScore).reversed()).collect(Collectors.toList());
+    filterList = list.stream().filter(p -> null != p.getScore())
+            .sorted(Comparator.comparing(UserPo::getScore).reversed()).collect(Collectors.toList());
     System.out.println("所有学生的成绩集合，逆序排序：");
     filterList.stream().forEach(System.out::println);
 
@@ -112,27 +113,27 @@ public class Jdk8Test {
     Map<String,Object> map02 = new HashMap<>();
     map02.put("name","小红");
     map02.put("cla","一班");
-    map02.put("score",50.d);
+    map02.put("score",20.d);
     list.add(map02);
     Map<String,Object> map03 = new HashMap<>();
     map03.put("name","张三");
     map03.put("cla","二班");
-    map03.put("score",60.d);
+    map03.put("score",20.d);
     list.add(map03);
     Map<String,Object> map04 = new HashMap<>();
     map04.put("name","李四");
     map04.put("cla","一班");
-    map04.put("score",60.d);
+    map04.put("score",20.d);
     list.add(map04);
     Map<String,Object> map05 = new HashMap<>();
     map05.put("name","王五");
     map05.put("cla","二班");
-    map05.put("score",56.d);
+    map05.put("score",10.d);
     list.add(map05);
     Map<String,Object> map06 = new HashMap<>();
     map06.put("name","赵六");
     map06.put("cla","三班");
-    map06.put("score",90.d);
+    map06.put("score",20.d);
     list.add(map06);
 
     //List<Map<String,Object>> 按照某个字段进行分组
