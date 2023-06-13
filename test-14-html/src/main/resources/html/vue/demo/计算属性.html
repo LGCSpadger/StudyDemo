@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue特殊属性key</title>
+</head>
+<body>
+    <!-- 3、使用简洁的模板语法把数据渲染到页面上 -->
+    <div id="app">
+        <p>姓：{{firstName}}</p>
+        <p>名：{{lastName}}</p>
+        <p>全名：{{firstName+lastName}}</p>
+        <p>全名（计算属性）：{{fullName}}</p>
+        <p>全名（方法实现）：{{getFullName()}}</p>
+        <div>在输入框里面输入全名：<input type="text" v-model="fullNameSetValue"></div>
+    </div>
+
+    <!-- 1、导入开发环境版本，包含了有帮助的命令行警告 -->
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="../../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+        //2、创建vue实例对象，设置el、data属性
+        var app = new Vue({
+            el: "#app",//管理 id="app" 的元素选择器
+            data: {
+                firstName: "李",
+                lastName: "元芳",
+            },
+            computed: {
+                //仅访问器
+                fullName() {
+                    console.log("计算属性：111111111111")
+                    return this.firstName + this.lastName;
+                },
+                //访问器 + 设置值
+                fullNameSetValue: {
+                    get() {
+                        console.log("计算属性要想设置值该这样写：33333333333")
+                        return this.firstName + this.lastName;
+                    },
+                    set(val) {
+                        this.firstName = val.substr(0,1);
+                        this.lastName = val.substr(1);
+                    }
+                }
+            },
+            methods: {
+                getFullName() {
+                    console.log("方法 getFullName：222222222222")
+                    return this.firstName + this.lastName;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

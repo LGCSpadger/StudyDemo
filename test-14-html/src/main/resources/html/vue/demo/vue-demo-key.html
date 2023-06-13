@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue特殊属性key</title>
+</head>
+<body>
+    <!-- 3、使用简洁的模板语法把数据渲染到页面上 -->
+    <div id="app">
+        <div v-if="loginType === 'mobile'">
+            <label>手机号：</label>
+            <input type="text" :key="1">
+        </div>
+        <div v-else>
+            <label>邮箱：</label>
+            <input type="text" :key="2">
+        </div>
+        <div>
+            <button @click="loginType = loginType === 'mobile' ? 'email' : 'mobile'">切换登录方式</button>
+        </div>
+    </div>
+
+    <!-- 1、导入开发环境版本，包含了有帮助的命令行警告 -->
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="../../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+        //2、创建vue实例对象，设置el、data属性
+        var app = new Vue({
+            el: "#app",//管理 id="app" 的元素选择器
+            data: {
+                loginType: "mobile"
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+</html>

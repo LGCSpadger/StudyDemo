@@ -7,21 +7,47 @@
 <body>
     <!-- 3、使用简洁的模板语法把数据渲染到页面上 -->
     <div id="app">
-        {{ message }} + {{ other }}
+        <h1>系统名称：{{title}}</h1>
+        <ul>
+            <li v-for="(item,index) in products">
+                名称：{{item.name}}
+                <button @click="changeStock(item,item.stock - 1)">-</button>
+                <span v-if="item.stock>0">{{item.stock}}</span>
+                <span v-else>无货</span>
+                <button @click="changeStock(item,item.stock + 1)">+</button>
+                <button @click="remove(index)">删除</button>
+            </li>
+        </ul>
     </div>
 
     <!-- 1、导入开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script src="../../../static/plugins/vue/vue.js" type="text/javascript" charset="utf-8"></script>
 
     <script>
         //2、创建vue实例对象，设置el、data属性
         var app = new Vue({
             el: "#app",//管理 id="app" 的元素选择器
             data: {
-                message: "Hello Vue!",
-                other: "开始学习之旅"
+                title: "库存管理系统",
+                products: [
+                    {name: "iphone", stock: 10},
+                    {name: "xiaomi", stock: 5},
+                    {name: "huawei", stock: 15},
+                ]
+            },
+            methods: {
+                remove(index) {
+                    this.products.splice(index,1);
+                },
+                changeStock(product,newStock) {
+                    if (newStock < 0) {
+                        newStock = 0;
+                    }
+                    product.stock = newStock;
+                }
             }
-        })
+        });
     </script>
 </body>
 </html>
